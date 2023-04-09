@@ -1,23 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:social_hive_client/screens/app_drawer.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(MaterialApp(
+  initialRoute: '/',
+  routes: {
+    '/': (context) => AppDrawer(),
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  },
+));
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('My First App'),
-        ),
-        body: const Center(
-          child: Text('Hello world!!'),
-        ),
-      ),
-    );
-  }
-}
