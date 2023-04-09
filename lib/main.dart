@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
           title: const Text('My First App'),
         ),
         body: const Center(
-          child: Text('Hello world'),
+          child: Text('Hello world!'),
         ),
       ),
     );
