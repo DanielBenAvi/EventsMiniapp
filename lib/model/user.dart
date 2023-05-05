@@ -17,6 +17,11 @@ class User{
     return _instance;
   }
 
+  // empty constructor
+  factory User.empty() {
+    return _instance;
+  }
+
 
   User._internal();
 

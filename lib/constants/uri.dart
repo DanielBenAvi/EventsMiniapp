@@ -9,7 +9,7 @@ class Url{
 
 
   factory Url() {
-    _instance.login = 'http://localhost:8084/superapp/users/login/2023b.liorariely/';
+    _instance.login = 'http://localhost:8084/superapp/users/login/2023b.LiorAriely/';
     return _instance;
   }
 
