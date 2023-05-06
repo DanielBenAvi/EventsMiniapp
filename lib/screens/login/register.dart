@@ -64,32 +64,33 @@ class _RegisterState extends State<Register> {
 
   DropdownButton<String> buildDropdownButton() {
     return DropdownButton<String>(
-              value: dropdownValue,
-              icon: const Icon(Icons.man),
-              elevation: 16,
-              style: const TextStyle(color: Colors.deepPurple),
-              underline: Container(
-                height: 2,
-                color: Colors.deepPurpleAccent,
-              ),
-              onChanged: (String? value) {
-                // This is called when the user selects an item.
-                setState(() {
-                  dropdownValue = value!;
-                });
-              },
-              items: roles.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            );
+      value: dropdownValue,
+      icon: const Icon(Icons.man),
+      elevation: 16,
+      style: const TextStyle(color: Colors.deepPurple),
+      underline: Container(
+        height: 2,
+        color: Colors.deepPurpleAccent,
+      ),
+      onChanged: (String? value) {
+        // This is called when the user selects an item.
+        setState(() {
+          dropdownValue = value!;
+        });
+      },
+      items: roles.map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+    );
   }
 
   void _continue() {
     // save all data to user object
-    User user = User(_textFieldController_email.text);
+    User user = User();
+    user.email = _textFieldController_email.text;
     user.username = _textFieldController_username.text;
     user.role = dropdownValue;
     user.avatar = _textFieldController_avatar.text;

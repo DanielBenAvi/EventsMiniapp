@@ -139,7 +139,7 @@ class _UserDetailsState extends State<UserDetails> {
 
   Future<void> _continue() async {
     // user
-    User user = User.empty();
+    User user = User();
     // await createUser(user);
     // user details
     final String name = _textFieldControllerName.text;

@@ -1,6 +1,4 @@
-import 'package:flutter/foundation.dart';
-
-class User{
+class User {
   // constructor
   String? email;
   String? role;
@@ -9,19 +7,10 @@ class User{
 
   static final User _instance = User._internal();
 
-  factory User(String email) {
-    if (kDebugMode) {
-      print(email);
-    }
-    _instance.email = email;
-    return _instance;
-  }
-
   // empty constructor
-  factory User.empty() {
+  factory User() {
     return _instance;
   }
-
 
   User._internal();
 
@@ -42,4 +31,11 @@ class User{
   String toString() {
     return 'User{email: $email, role: $role, username: $username, avatar: $avatar}';
   }
+
+  // fromJson
+  User.fromJson(Map<String, dynamic> json)
+      : email = json['userId']['email'],
+        role = json['role'],
+        username = json['username'],
+        avatar = json['avatar'];
 }
