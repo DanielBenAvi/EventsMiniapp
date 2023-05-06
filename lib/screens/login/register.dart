@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:social_hive_client/model/user.dart';
-
-import '../../constants/sex_preferences.dart';
-
-const List<String> roles = <String>['ADMIN', 'MINIAPP_USER', 'SUPERAPP_USER'];
+import 'package:social_hive_client/widgets/build_drop_button.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -17,7 +14,14 @@ class _RegisterState extends State<Register> {
   final _textFieldController_username = TextEditingController();
   final _textFieldController_avatar = TextEditingController();
 
-  String dropdownValue = roles.first;
+  final List<String> roles = const ['ADMIN', 'MINIAPP_USER', 'SUPERAPP_USER'];
+  final List<Icon> rolesIcons = const [
+    Icon(Icons.admin_panel_settings),
+    Icon(Icons.person),
+    Icon(Icons.supervisor_account)
+  ];
+
+  late String dropdownValue = roles.first;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +55,17 @@ class _RegisterState extends State<Register> {
                   hintText: 'Avatar',
                 ),
               ),
-              buildDropdownButton(),
+              // buildDropdownButton(),
+              DropButton(
+                title: "Chooese Role",
+                items: roles,
+                icons: rolesIcons,
+                onDropButtonConfirm: (String value) {
+                  setState(() {
+                    dropdownValue = value;
+                  });
+                },
+              ),
               const SizedBox(height: 20),
               ElevatedButton(
                   onPressed: _continue, child: const Text('Continue')),
@@ -59,31 +73,6 @@ class _RegisterState extends State<Register> {
           ),
         ),
       ),
-    );
-  }
-
-  DropdownButton<String> buildDropdownButton() {
-    return DropdownButton<String>(
-      value: dropdownValue,
-      icon: const Icon(Icons.man),
-      elevation: 16,
-      style: const TextStyle(color: Colors.deepPurple),
-      underline: Container(
-        height: 2,
-        color: Colors.deepPurpleAccent,
-      ),
-      onChanged: (String? value) {
-        // This is called when the user selects an item.
-        setState(() {
-          dropdownValue = value!;
-        });
-      },
-      items: roles.map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
     );
   }
 

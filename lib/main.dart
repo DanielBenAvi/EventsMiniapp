@@ -9,7 +9,7 @@ void main() => runApp(MaterialApp(
       routes: {
         '/login': (context) => const Login(),
         '/register': (context) => const Register(),
-        '/user_details': (context) => const UserDetails(),
+        '/user_details': (context) => const UserDetailsScreen(),
         '/app_drawer': (context) => const AppDrawer(),
       },
     ));
