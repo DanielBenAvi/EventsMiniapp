@@ -56,7 +56,7 @@ class _LoginState extends State<Login> {
                     child: const Text('Login')),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                    onPressed: _register, child: const Text('Register')),
+                    onPressed: _screenRegister, child: const Text('Register')),
               ]),
         ),
       ),
@@ -67,18 +67,18 @@ class _LoginState extends State<Login> {
     Map<String, dynamic> respone =
         await UserApi().fetchUser(_textFieldEmailController.text);
     if (respone.isEmpty) {
-      _register();
+      _screenRegister();
     } else {
-      _appDrawer();
+      _screenAppDrawer();
     }
   }
 
-  void _register() {
+  void _screenRegister() {
     Navigator.pop(context);
     Navigator.pushNamed(context, '/register');
   }
 
-  void _appDrawer() {
+  void _screenAppDrawer() {
     Navigator.pop(context);
     Navigator.pushNamed(context, '/app_drawer');
   }
