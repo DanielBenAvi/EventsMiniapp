@@ -1,20 +1,11 @@
 import 'package:flutter/material.dart';
-
-class SexPreference {
-  final int id;
-  final String name;
-
-  SexPreference({
-    required this.id,
-    required this.name,
-  });
-}
+import 'package:social_hive_client/model/item_object.dart';
 
 class SexPreferences {
-  List<SexPreference> genderList = <SexPreference>[
-    SexPreference(id: 1, name: 'Male'),
-    SexPreference(id: 2, name: 'Female'),
-    SexPreference(id: 3, name: 'Other'),
+  List<ItemObject> genderList = <ItemObject>[
+    ItemObject(id: 1, name: 'Male'),
+    ItemObject(id: 2, name: 'Female'),
+    ItemObject(id: 3, name: 'Other'),
   ];
   List<Icon> iconList = <Icon>[
     const Icon(Icons.male),
@@ -30,7 +21,7 @@ class SexPreferences {
 
   SexPreferences._internal();
 
-  List<SexPreference> getPreferences() {
+  List<ItemObject> getPreferences() {
     return genderList;
   }
 }

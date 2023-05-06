@@ -1,13 +1,11 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
-import 'package:multi_select_flutter/util/multi_select_item.dart';
-import 'package:multi_select_flutter/util/multi_select_list_type.dart';
 import 'package:social_hive_client/constants/preferences.dart';
 import 'package:social_hive_client/constants/sex_preferences.dart';
+import 'package:social_hive_client/model/item_object.dart';
 import 'package:social_hive_client/model/user.dart';
+import 'package:social_hive_client/widgets/multi_select_dialog.dart';
 
 const List<String> genderList = <String>['Male', 'Female', 'Other'];
 const List<Icon> iconList = <Icon>[
@@ -29,26 +27,14 @@ class _UserDetailsState extends State<UserDetails> {
   final _textFieldControllerLatitude = TextEditingController();
   final _textFieldControllerLongitude = TextEditingController();
 
-  static final List<Preference> _preferences = Preferences().getPreferences();
-  static final List<SexPreference> _sexPreferences =
-      SexPreferences().getPreferences();
-  final _items = _preferences
-      .map((preferences) =>
-          MultiSelectItem<Preference>(preferences, preferences.name))
-      .toList();
-  final _sexPreferencesItems = _sexPreferences
-      .map((sexPreferences) =>
-          MultiSelectItem<SexPreference>(sexPreferences, sexPreferences.name))
-      .toList();
-  List<Preference> _selectedPreferences = [];
-  List<SexPreference> _selectedSexPreferences = [];
+  List<ItemObject> _selectedPreferences = [];
+  List<ItemObject> _selectedSexPreferences = [];
 
   String dropdownValue = genderList.first;
 
   @override
   void initState() {
     super.initState();
-    _selectedPreferences = _preferences;
   }
 
   @override
@@ -78,11 +64,25 @@ class _UserDetailsState extends State<UserDetails> {
                 ),
               ),
               const SizedBox(height: 40),
-              buildMultiSelectDialogField(),
+              MultiSelect(
+                "Preferences",
+                "Preferences",
+                Preferences().getPreferences(),
+                onMultiSelectConfirm: (List<ItemObject> results) {
+                  _selectedPreferences = results;
+                },
+              ),
               const SizedBox(height: 20),
               buildDropdownButton(),
               const SizedBox(height: 20),
-              buildMultiSelectDialogFieldSexPreferences(),
+              MultiSelect(
+                "Sex Preferences",
+                "Sex Preferences",
+                SexPreferences().getPreferences(),
+                onMultiSelectConfirm: (List<ItemObject> results) {
+                  _selectedSexPreferences = results;
+                },
+              ),
               const SizedBox(height: 20),
               TextField(
                 controller: _textFieldControllerLatitude,
@@ -103,75 +103,6 @@ class _UserDetailsState extends State<UserDetails> {
           ),
         ),
       ),
-    );
-  }
-
-  MultiSelectDialogField<Preference> buildMultiSelectDialogField() {
-    return MultiSelectDialogField(
-      searchable: true,
-      items: _items,
-      title: const Text('Preferences'),
-      selectedColor: Colors.blue,
-      listType: MultiSelectListType.LIST,
-      selectedItemsTextStyle: const TextStyle(
-        color: Colors.blue,
-      ),
-      decoration: BoxDecoration(
-        color: Colors.blue.withOpacity(0.1),
-        border: Border.all(
-          color: Colors.blue,
-          width: 2,
-        ),
-      ),
-      buttonIcon: const Icon(
-        Icons.arrow_drop_down,
-        color: Colors.blue,
-      ),
-      buttonText: const Text(
-        'Preferences',
-        style: TextStyle(
-          color: Colors.blue,
-          fontSize: 16,
-        ),
-      ),
-      onConfirm: (results) {
-        _selectedPreferences = results;
-      },
-    );
-  }
-
-  MultiSelectDialogField<SexPreference>
-      buildMultiSelectDialogFieldSexPreferences() {
-    return MultiSelectDialogField(
-      searchable: true,
-      items: _sexPreferencesItems,
-      title: const Text('Sex Preferences'),
-      selectedColor: Colors.blue,
-      listType: MultiSelectListType.LIST,
-      selectedItemsTextStyle: const TextStyle(
-        color: Colors.blue,
-      ),
-      decoration: BoxDecoration(
-        color: Colors.blue.withOpacity(0.1),
-        border: Border.all(
-          color: Colors.blue,
-          width: 2,
-        ),
-      ),
-      buttonIcon: const Icon(
-        Icons.arrow_drop_down,
-        color: Colors.blue,
-      ),
-      buttonText: const Text(
-        'Sex Preferences',
-        style: TextStyle(
-          color: Colors.blue,
-          fontSize: 16,
-        ),
-      ),
-      onConfirm: (results) {
-        _selectedSexPreferences = results;
-      },
     );
   }
 
@@ -209,37 +140,20 @@ class _UserDetailsState extends State<UserDetails> {
   Future<void> _continue() async {
     // user
     User user = User.empty();
-    await createUser(user);
+    // await createUser(user);
     // user details
     final String name = _textFieldControllerName.text;
     final String phoneNumber = _textFieldControllerPhoneNumber.text;
     final String latitude = _textFieldControllerLatitude.text;
     final String longitude = _textFieldControllerLongitude.text;
-    final List<Preference> preferences = _selectedPreferences;
+    final List<ItemObject> preferences = _selectedPreferences;
     final String gender = dropdownValue.toString();
-    final List<SexPreference> sexPreferences = _selectedSexPreferences;
+    final List<ItemObject> sexPreferences = _selectedSexPreferences;
 
     Navigator.pop(context);
     Navigator.pushNamed(context, '/login');
     // close current screen
   }
-
-  // Future<http.Response> createUser(User user) {
-  //   return http.post(
-  //     Uri.parse('http://localhost:8084/superapp/users'),
-  //     headers: <String, String>{
-  //       'Accept': 'application/json',
-  //       'Content-Type': 'application/json'
-  //     },
-  //     encoding: Encoding.getByName('utf-8'),
-  //     body: jsonEncode(<String, dynamic>{
-  //       "email": user.getEmail!,
-  //       "username": user.getUsername!,
-  //       "role": user.getRole!,
-  //       "avatar": user.getAvatar!,
-  //     }),
-  //   );
-  // }
 
   Future<void> createUser(User user) async {
     // circular progress indicator
