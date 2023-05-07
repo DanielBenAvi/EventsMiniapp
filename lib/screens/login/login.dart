@@ -51,19 +51,9 @@ class _LoginState extends State<Login> {
                   },
                   child: const Text('Login')),
               const SizedBox(height: 20),
-              ElevatedButton(
+              TextButton(
                 onPressed: _screenRegister,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.transparent,
-                  foregroundColor: Colors.black,
-                  elevation: 0,
-                ),
-                child: const Text(
-                  'Register',
-                  style: TextStyle(
-                    decoration: TextDecoration.underline,
-                  ),
-                ),
+                child: const Text('Register'),
               ),
             ],
           ),
