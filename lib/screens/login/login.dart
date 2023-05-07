@@ -64,13 +64,13 @@ class _LoginState extends State<Login> {
   }
 
   Future<void> _login() async {
-    Map<String, dynamic> respone =
-        await UserApi().fetchUser(_textFieldEmailController.text);
-    if (respone.isEmpty) {
-      _screenRegister();
-    } else {
-      _screenAppDrawer();
-    }
+    // Map<String, dynamic> respone =
+    //     await UserApi().fetchUser(_textFieldEmailController.text);
+    // if (respone.isEmpty) {
+    // _screenRegister();
+    // } else {
+    _screenAppDrawer();
+    // }
   }
 
   void _screenRegister() {
@@ -80,6 +80,6 @@ class _LoginState extends State<Login> {
 
   void _screenAppDrawer() {
     Navigator.pop(context);
-    Navigator.pushNamed(context, '/app_drawer');
+    Navigator.pushNamed(context, '/home');
   }
 }

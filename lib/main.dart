@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:social_hive_client/screens/app_drawer.dart';
+import 'package:social_hive_client/screens/home.dart';
 import 'package:social_hive_client/screens/login/login.dart';
 import 'package:social_hive_client/screens/login/register.dart';
 import 'package:social_hive_client/screens/login/page_user_details.dart';
@@ -10,6 +10,6 @@ void main() => runApp(MaterialApp(
         '/login': (context) => const Login(),
         '/register': (context) => const Register(),
         '/user_details': (context) => const UserDetailsScreen(),
-        '/app_drawer': (context) => const AppDrawer(),
+        '/home': (context) => const Home(),
       },
     ));

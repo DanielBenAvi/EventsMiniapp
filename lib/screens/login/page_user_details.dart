@@ -116,15 +116,24 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
   }
 
   Future<void> _continue() async {
-    const Snack(title: "Creating User");
+    // const Snack(title: "Creating User");
+    // cirucluar progress indicator
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
     // user
     User user = User();
-    await UserApi().postUser(
-      user.getEmail,
-      user.getUsername,
-      user.getRole,
-      user.getAvatar,
-    );
+    // await UserApi().postUser(
+    //   user.getEmail,
+    //   user.getUsername,
+    //   user.getRole,
+    //   user.getAvatar,
+    // );
     // user details
     final String name = _textFieldControllerName.text;
     final String phoneNumber = _textFieldControllerPhoneNumber.text;
