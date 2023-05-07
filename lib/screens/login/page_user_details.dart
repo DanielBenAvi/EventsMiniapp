@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:form_validator/form_validator.dart';
 import 'package:social_hive_client/constants/preferences.dart';
 import 'package:social_hive_client/constants/sex_preferences.dart';
 import 'package:social_hive_client/model/item_object.dart';
 import 'package:social_hive_client/model/user.dart';
-import 'package:social_hive_client/rest_api/user_api.dart';
 import 'package:social_hive_client/widgets/multi_select_dialog.dart';
-import 'package:social_hive_client/widgets/snack_bar.dart';
 import '../../widgets/build_drop_button.dart';
 
 const List<String> genderList = <String>['Male', 'Female', 'Other'];
@@ -27,6 +26,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
   final _textFieldControllerPhoneNumber = TextEditingController();
   final _textFieldControllerLatitude = TextEditingController();
   final _textFieldControllerLongitude = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   List<ItemObject> _selectedPreferences = [];
   List<ItemObject> _selectedSexPreferences = [];
@@ -45,70 +45,78 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
         title: const Text('User Details'),
       ),
       body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(40),
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              TextField(
-                controller: _textFieldControllerName,
-                decoration: const InputDecoration(
-                  hintText: 'Name',
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                TextFormField(
+                  controller: _textFieldControllerName,
+                  decoration: const InputDecoration(hintText: 'Name'),
+                  validator:
+                      ValidationBuilder().minLength(3).maxLength(20).build(),
                 ),
-              ),
-              TextField(
-                controller: _textFieldControllerPhoneNumber,
-                decoration: const InputDecoration(
-                  hintText: 'Phone Number',
+                TextFormField(
+                  controller: _textFieldControllerPhoneNumber,
+                  decoration: const InputDecoration(hintText: 'Phone Number'),
+                  validator: ValidationBuilder().phone().maxLength(50).build(),
                 ),
-              ),
-              const SizedBox(height: 40),
-              MultiSelect(
-                "Preferences",
-                "Preferences",
-                Preferences().getPreferences(),
-                onMultiSelectConfirm: (List<ItemObject> results) {
-                  _selectedPreferences = results;
-                },
-              ),
-              const SizedBox(height: 20),
-              DropButton(
-                title: 'Gender',
-                items: genderList,
-                icons: iconList,
-                onDropButtonConfirm: (String value) {
-                  dropdownValue = value;
-                  debugPrint(dropdownValue);
-                },
-              ),
-              const SizedBox(height: 20),
-              MultiSelect(
-                "Sex Preferences",
-                "Sex Preferences",
-                SexPreferences().getPreferences(),
-                onMultiSelectConfirm: (List<ItemObject> results) {
-                  _selectedSexPreferences = results;
-                },
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _textFieldControllerLatitude,
-                decoration: const InputDecoration(
-                  hintText: 'Latitude',
+                const SizedBox(height: 40),
+                MultiSelect(
+                  "Preferences",
+                  "Preferences",
+                  Preferences().getPreferences(),
+                  onMultiSelectConfirm: (List<ItemObject> results) {
+                    _selectedPreferences = results;
+                  },
                 ),
-              ),
-              TextField(
-                controller: _textFieldControllerLongitude,
-                decoration: const InputDecoration(
-                  hintText: 'Longitude',
+                const SizedBox(height: 20),
+                DropButton(
+                  title: 'Gender',
+                  items: genderList,
+                  icons: iconList,
+                  onDropButtonConfirm: (String value) {
+                    dropdownValue = value;
+                    debugPrint(dropdownValue);
+                  },
                 ),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                  onPressed: _continue, child: const Text('Continue')),
-            ],
+                const SizedBox(height: 20),
+                MultiSelect(
+                  "Sex Preferences",
+                  "Sex Preferences",
+                  SexPreferences().getPreferences(),
+                  onMultiSelectConfirm: (List<ItemObject> results) {
+                    _selectedSexPreferences = results;
+                  },
+                ),
+                const SizedBox(height: 20),
+                TextFormField(
+                  controller: _textFieldControllerLatitude,
+                  decoration: const InputDecoration(
+                    hintText: 'Latitude',
+                  ),
+                  validator: ValidationBuilder().maxLength(50).build(),
+                ),
+                TextFormField(
+                  controller: _textFieldControllerLongitude,
+                  decoration: const InputDecoration(
+                    hintText: 'Longitude',
+                  ),
+                  validator: ValidationBuilder().maxLength(50).build(),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        _continue();
+                      }
+                    },
+                    child: const Text('Continue')),
+              ],
+            ),
           ),
         ),
       ),

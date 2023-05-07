@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:form_validator/form_validator.dart';
 import 'package:social_hive_client/rest_api/user_api.dart';
 
 class Login extends StatefulWidget {
@@ -24,40 +25,49 @@ class _LoginState extends State<Login> {
         child: Form(
           key: _formKey,
           child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                TextFormField(
-                  controller: _textFieldEmailController,
-                  decoration: const InputDecoration(
-                    hintText: 'Email',
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
-                    }
-                    return null;
-                  },
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextFormField(
+                controller: _textFieldEmailController,
+                decoration: const InputDecoration(
+                  hintText: 'Email',
                 ),
-                ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          },
-                        );
-                        _login();
-                      }
-                    },
-                    child: const Text('Login')),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                    onPressed: _screenRegister, child: const Text('Register')),
-              ]),
+                validator: ValidationBuilder().email().maxLength(50).build(),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
+                      );
+                      _login();
+                    }
+                  },
+                  child: const Text('Login')),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _screenRegister,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent,
+                  foregroundColor: Colors.black,
+                  elevation: 0,
+                ),
+                child: const Text(
+                  'Register',
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
