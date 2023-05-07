@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:social_hive_client/model/event.dart';
+import 'package:social_hive_client/widgets/event_details.dart';
 
 // demo list of events
 final List<Event> events = <Event>[
@@ -9,6 +10,7 @@ final List<Event> events = <Event>[
     location: 'Bucharest',
     date: '2021-10-10',
     time: '20:00',
+    image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819',
   ),
   Event(
     name: 'Ski',
@@ -16,6 +18,7 @@ final List<Event> events = <Event>[
     location: 'Busteni',
     date: '2021-12-10',
     time: '08:00',
+    image: 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256',
   ),
   Event(
     name: 'Hiking',
@@ -23,6 +26,7 @@ final List<Event> events = <Event>[
     location: 'Bucegi',
     date: '2021-11-10',
     time: '08:00',
+    image: 'https://images.unsplash.com/photo-1551632811-561732d1e306',
   ),
 ];
 
@@ -51,7 +55,11 @@ class _HomeState extends State<Home> {
                 ListTile(
                   title: Text(events[index].name),
                   subtitle: Text(events[index].description),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            EventDetails(event: events[index])));
+                  },
                 ),
                 const Divider(),
               ],
