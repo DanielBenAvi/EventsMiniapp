@@ -3,7 +3,6 @@ import 'package:form_validator/form_validator.dart';
 import 'package:social_hive_client/constants/preferences.dart';
 import 'package:social_hive_client/constants/sex_preferences.dart';
 import 'package:social_hive_client/model/item_object.dart';
-import 'package:social_hive_client/model/user.dart';
 import 'package:social_hive_client/widgets/multi_select_dialog.dart';
 import '../../widgets/build_drop_button.dart';
 
@@ -135,7 +134,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
       },
     );
     // user
-    User user = User();
+    // User user = User();
     // await UserApi().postUser(
     //   user.getEmail,
     //   user.getUsername,
