@@ -11,9 +11,9 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  final _textFieldController_email = TextEditingController();
-  final _textFieldController_username = TextEditingController();
-  final _textFieldController_avatar = TextEditingController();
+  final _textFieldControllerEmail = TextEditingController();
+  final _textFieldControllerUsername = TextEditingController();
+  final _textFieldControllerAvatar = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   final List<String> roles = const ['ADMIN', 'MINIAPP_USER', 'SUPERAPP_USER'];
@@ -41,17 +41,17 @@ class _RegisterState extends State<Register> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 TextFormField(
-                  controller: _textFieldController_email,
+                  controller: _textFieldControllerEmail,
                   decoration: const InputDecoration(hintText: 'Email'),
                   validator: ValidationBuilder().email().maxLength(50).build(),
                 ),
                 TextFormField(
-                    controller: _textFieldController_username,
+                    controller: _textFieldControllerUsername,
                     decoration: const InputDecoration(hintText: 'Username'),
                     validator:
                         ValidationBuilder().minLength(3).maxLength(20).build()),
                 TextFormField(
-                  controller: _textFieldController_avatar,
+                  controller: _textFieldControllerAvatar,
                   decoration: const InputDecoration(hintText: 'Avatar'),
                   validator: ValidationBuilder().maxLength(50).build(),
                 ),
@@ -86,12 +86,12 @@ class _RegisterState extends State<Register> {
   void _continue() {
     // save all data to user object
     User user = User();
-    user.email = _textFieldController_email.text;
-    user.username = _textFieldController_username.text;
+    user.email = _textFieldControllerEmail.text;
+    user.username = _textFieldControllerUsername.text;
     user.role = dropdownValue;
-    user.avatar = _textFieldController_avatar.text;
+    user.avatar = _textFieldControllerAvatar.text;
     // log user object
-    print(user);
+    debugPrint(user.toString());
     //  change to next screen
     Navigator.pushNamed(context, '/user_details');
   }

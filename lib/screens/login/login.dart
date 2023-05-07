@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
-import 'package:social_hive_client/rest_api/user_api.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);

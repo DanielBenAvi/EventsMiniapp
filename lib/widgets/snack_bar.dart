@@ -8,7 +8,7 @@ class Snack extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // create SnackBar
-    final Sn = SnackBar(
+    final snakbar = SnackBar(
       content: const Text('Yay! A SnackBar!'),
       action: SnackBarAction(
         label: 'Undo',
@@ -17,6 +17,6 @@ class Snack extends StatelessWidget {
         },
       ),
     );
-    return Sn;
+    return snakbar;
   }
 }
