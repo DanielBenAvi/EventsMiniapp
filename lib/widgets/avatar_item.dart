@@ -6,9 +6,18 @@ class AvatarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
-      radius: 30,
-      backgroundImage: NetworkImage(photoUrl),
+    return Container(
+      width: 200,
+      height: 200,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.blue, width: 2),
+        shape: BoxShape.circle,
+        image: DecorationImage(
+            image: NetworkImage(
+              photoUrl,
+            ),
+            fit: BoxFit.contain),
+      ),
     );
   }
 }
