@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:social_hive_client/screens/add_event.dart';
 import 'package:social_hive_client/screens/home.dart';
 import 'package:social_hive_client/screens/login/login.dart';
 import 'package:social_hive_client/screens/login/register.dart';
@@ -15,5 +16,6 @@ void main() => runApp(MaterialApp(
         '/home': (context) => const Home(),
         '/profile': (context) => const ProfileScreen(),
         '/image_picker': (context) => const ImagePickerScreen(),
+        '/add_event': (context) => const AddEventScreen(),
       },
     ));

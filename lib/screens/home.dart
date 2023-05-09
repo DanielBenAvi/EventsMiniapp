@@ -101,7 +101,9 @@ class _HomeState extends State<Home> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, '/add_event');
+        },
         child: const Icon(Icons.add),
       ),
     );
