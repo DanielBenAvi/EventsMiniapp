@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
-import 'package:social_hive_client/model/boundaries/user_boundary.dart';
+import 'package:social_hive_client/model/singletone_user.dart';
 import 'package:social_hive_client/widgets/build_drop_button.dart';
 
 class Register extends StatefulWidget {
@@ -103,13 +103,13 @@ class _RegisterState extends State<Register> {
 
   void _continue() {
     // save all data to user object
-    NewUserBoundary user = NewUserBoundary();
-    user.email = _textFieldControllerEmail.text;
-    user.username = _textFieldControllerUsername.text;
-    user.role = dropdownValue;
-    user.avatar = _avatarPath;
+    SingletoneUser singletoneUser = SingletoneUser.instance;
+    singletoneUser.email = _textFieldControllerEmail.text;
+    singletoneUser.username = _textFieldControllerUsername.text;
+    singletoneUser.role = dropdownValue;
+    singletoneUser.avatar = _avatarPath;
     // log user object
-    debugPrint(user.toString());
+    debugPrint(singletoneUser.toString());
     //  change to next screen
     Navigator.pushNamed(context, '/user_details');
   }

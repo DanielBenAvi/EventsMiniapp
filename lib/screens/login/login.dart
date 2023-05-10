@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
+import 'package:social_hive_client/model/boundaries/user_boundary.dart';
+import 'package:social_hive_client/model/singletone_user.dart';
+import 'package:social_hive_client/rest_api/user_api.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -63,13 +66,17 @@ class _LoginState extends State<Login> {
   }
 
   Future<void> _login() async {
-    // Map<String, dynamic> respone =
-    //     await UserApi().fetchUser(_textFieldEmailController.text);
-    // if (respone.isEmpty) {
-    // _screenRegister();
-    // } else {
-    _screenAppDrawer();
-    // }
+    UserBoundary userBoundary =
+        await UserApi().fetchUser(_textFieldEmailController.text);
+    SingletoneUser singletoneUser = SingletoneUser.instance;
+    singletoneUser.email = userBoundary.userId.email;
+    singletoneUser.username = userBoundary.username;
+    singletoneUser.avatar = userBoundary.avatar;
+    singletoneUser.role = userBoundary.role;
+
+    debugPrint(singletoneUser.toString());
+
+    _screenHome();
   }
 
   void _screenRegister() {
@@ -77,7 +84,7 @@ class _LoginState extends State<Login> {
     Navigator.pushNamed(context, '/register');
   }
 
-  void _screenAppDrawer() {
+  void _screenHome() {
     Navigator.pop(context);
     Navigator.pushNamed(context, '/home');
   }

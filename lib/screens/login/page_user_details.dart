@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:social_hive_client/constants/preferences.dart';
 import 'package:social_hive_client/constants/sex_preferences.dart';
+import 'package:social_hive_client/model/boundaries/user_boundary.dart';
 import 'package:social_hive_client/model/item_object.dart';
+import 'package:social_hive_client/model/singletone_user.dart';
+import 'package:social_hive_client/rest_api/user_api.dart';
 import 'package:social_hive_client/widgets/multi_select_dialog.dart';
 import '../../widgets/build_drop_button.dart';
 
@@ -134,13 +137,14 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
       },
     );
     // user
-    // User user = User();
-    // await UserApi().postUser(
-    //   user.getEmail,
-    //   user.getUsername,
-    //   user.getRole,
-    //   user.getAvatar,
-    // );
+    SingletoneUser singletoneUser = SingletoneUser.instance;
+    NewUserBoundary newUserBoundary = NewUserBoundary(
+      email: singletoneUser.email as String,
+      username: singletoneUser.username as String,
+      role: singletoneUser.role as String,
+      avatar: singletoneUser.avatar as String,
+    );
+    await UserApi().postUser(newUserBoundary);
     // user details
     final String name = _textFieldControllerName.text;
     final String phoneNumber = _textFieldControllerPhoneNumber.text;

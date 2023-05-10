@@ -1,13 +1,12 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/retry.dart';
 import '../model/boundaries/user_boundary.dart';
 
 /// UserApi class
 class UserApi {
   /// create User method
-  Future<Map<String, dynamic>> postUser(
-      String? email, String? username, String? role, String? avatar) async {
+  Future<UserBoundary> postUser(NewUserBoundary newUserBoundary) async {
     // create user
     final response = await http.post(
       Uri.parse('http://localhost:8084/superapp/users'),
@@ -16,18 +15,13 @@ class UserApi {
         'Content-Type': 'application/json'
       },
       encoding: Encoding.getByName('utf-8'),
-      body: jsonEncode(<String, dynamic>{
-        "email": email,
-        "username": username,
-        "role": role,
-        "avatar": avatar,
-      }),
+      body: jsonEncode(newUserBoundary.toJson()),
     );
     if (response.statusCode == 200) {
-      return jsonDecode(response.body);
+      return UserBoundary.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to create user.');
     }
-
-    return {};
   }
 
   /// update User method
@@ -36,16 +30,15 @@ class UserApi {
   }
 
   /// get User method
-  Future<Map<String, dynamic>> fetchUser(String userEmail) async {
+  Future<UserBoundary> fetchUser(String userEmail) async {
+    final client = RetryClient(http.Client());
     final response = await http.get(Uri.parse(
         'http://localhost:8084/superapp/users/login/2023b.LiorAriely/$userEmail'));
-    if (response.statusCode == 200) {
+    try {
       Map<String, dynamic> userMap = jsonDecode(response.body);
-      NewUserBoundary user = NewUserBoundary();
-      user = NewUserBoundary.fromJson(userMap);
-      debugPrint('LOG - user logedin -  $user');
-      return userMap;
+      return UserBoundary.fromJson(userMap);
+    } finally {
+      client.close();
     }
-    return {};
   }
 }

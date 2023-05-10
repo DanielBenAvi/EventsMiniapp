@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:social_hive_client/model/event.dart';
-import 'package:social_hive_client/model/boundaries/user_boundary.dart';
+import 'package:social_hive_client/model/singletone_user.dart';
 import 'package:social_hive_client/widgets/event_details.dart';
 
 // demo list of events
@@ -39,12 +39,13 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  NewUserBoundary user = NewUserBoundary();
+  SingletoneUser singletoneUser = SingletoneUser.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(user.getUsername ?? 'Home'),
+        title: Text(singletoneUser.username ?? 'Home'),
       ),
       body: RefreshIndicator(
         onRefresh: _refreshData,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:social_hive_client/model/boundaries/user_boundary.dart';
+import 'package:social_hive_client/model/singletone_user.dart';
 import 'package:social_hive_client/widgets/avatar_item.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -10,7 +10,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final NewUserBoundary _user = NewUserBoundary();
+  final SingletoneUser singletoneUser = SingletoneUser.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,12 +23,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Column(
             children: [
               AvatarItem(
-                photoUrl: _user.getAvatar?.toString() ??
+                photoUrl: singletoneUser.avatar?.toString() ??
                     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw4dcOs0ebrWK3g4phCh7cfF-aOM3rhxnsCQ&usqp=CAU',
               ),
               const SizedBox(height: 20),
               Text(
-                'Email: ${_user.getEmail}',
+                'Email: ${singletoneUser.email}',
                 style: const TextStyle(
                   fontSize: 20,
                   color: Colors.blue,
@@ -36,7 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               const SizedBox(height: 20),
               Text(
-                'UserName: ${_user.getUsername}',
+                'UserName: ${singletoneUser.username}',
               ),
             ],
           )),
