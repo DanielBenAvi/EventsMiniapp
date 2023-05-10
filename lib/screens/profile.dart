@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:social_hive_client/model/user.dart';
+import 'package:social_hive_client/model/boundaries/user_boundary.dart';
 import 'package:social_hive_client/widgets/avatar_item.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -10,7 +10,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final User _user = User();
+  final NewUserBoundary _user = NewUserBoundary();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

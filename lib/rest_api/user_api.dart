@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../model/user.dart';
+import '../model/boundaries/user_boundary.dart';
 
 /// UserApi class
 class UserApi {
@@ -41,8 +41,8 @@ class UserApi {
         'http://localhost:8084/superapp/users/login/2023b.LiorAriely/$userEmail'));
     if (response.statusCode == 200) {
       Map<String, dynamic> userMap = jsonDecode(response.body);
-      User user = User();
-      user = User.fromJson(userMap);
+      NewUserBoundary user = NewUserBoundary();
+      user = NewUserBoundary.fromJson(userMap);
       debugPrint('LOG - user logedin -  $user');
       return userMap;
     }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
-import 'package:social_hive_client/model/user.dart';
+import 'package:social_hive_client/model/boundaries/user_boundary.dart';
 import 'package:social_hive_client/widgets/build_drop_button.dart';
 
 class Register extends StatefulWidget {
@@ -103,7 +103,7 @@ class _RegisterState extends State<Register> {
 
   void _continue() {
     // save all data to user object
-    User user = User();
+    NewUserBoundary user = NewUserBoundary();
     user.email = _textFieldControllerEmail.text;
     user.username = _textFieldControllerUsername.text;
     user.role = dropdownValue;
