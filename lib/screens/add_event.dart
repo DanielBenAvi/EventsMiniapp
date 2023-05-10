@@ -68,6 +68,10 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   _selectedPreferences = results;
                 }),
                 const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {},
+                  child: const Text('Create Event'),
+                ),
               ],
             ),
           ),
@@ -75,4 +79,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
       ),
     );
   }
+
+  // Future<void> _createEvent() {
+  //   // TODO: Implement this method
+  // }
 }

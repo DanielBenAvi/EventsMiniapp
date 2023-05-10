@@ -11,40 +11,44 @@ class EventDetails extends StatelessWidget {
       appBar: AppBar(
         title: Text(event.name),
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Image.network(event.image),
-              Text(
-                event.description,
-                style: const TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image.network(event.image),
+            const SizedBox(height: 20),
+            Text(
+              event.description,
+              style: const TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue,
               ),
-              Text(
-                event.location,
-                style: const TextStyle(fontSize: 20, color: Colors.blue),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              event.location,
+              style: const TextStyle(fontSize: 20, color: Colors.blue),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              event.date,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
               ),
-              Text(
-                event.date,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              event.time,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
               ),
-              Text(
-                event.time,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
