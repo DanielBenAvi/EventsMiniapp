@@ -68,6 +68,7 @@ class _LoginState extends State<Login> {
   Future<void> _login() async {
     UserBoundary userBoundary =
         await UserApi().fetchUser(_textFieldEmailController.text);
+
     SingletoneUser singletoneUser = SingletoneUser.instance;
     singletoneUser.email = userBoundary.userId.email;
     singletoneUser.username = userBoundary.username;

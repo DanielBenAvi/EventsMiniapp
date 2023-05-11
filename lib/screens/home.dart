@@ -9,7 +9,8 @@ final List<Event> events = <Event>[
     name: 'Dance Party',
     description: 'Dance party with DJ',
     location: 'Bucharest',
-    date: '2021-10-10',
+    date: DateTime(
+        int.parse('2021'), int.parse('11'), int.parse('10')), // 2021-11-10
     time: '20:00',
     image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819',
   ),
@@ -17,7 +18,8 @@ final List<Event> events = <Event>[
     name: 'Ski',
     description: 'Ski in the mountains',
     location: 'Busteni',
-    date: '2021-12-10',
+    date: DateTime(
+        int.parse('2021'), int.parse('11'), int.parse('10')), // 2021-11-10
     time: '08:00',
     image: 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256',
   ),
@@ -25,7 +27,8 @@ final List<Event> events = <Event>[
     name: 'Hiking',
     description: 'Hiking in the mountains',
     location: 'Bucegi',
-    date: '2021-11-10',
+    date: DateTime(
+        int.parse('2021'), int.parse('11'), int.parse('10')), // 2021-11-10
     time: '08:00',
     image: 'https://images.unsplash.com/photo-1551632811-561732d1e306',
   ),

@@ -1,13 +1,13 @@
-import 'package:social_hive_client/model/item_object.dart';
+import 'item_object.dart';
 
 class UserDetails {
   // constructor
   String? email;
   String? name;
   String? phoneNumber;
-  List<String>? interests;
+  List<ItemObject>? interests;
   String? gender;
-  List<String>? genderPreferences;
+  List<ItemObject>? genderPreferences;
 
   static UserDetails? _instance;
 

@@ -137,8 +137,6 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
   }
 
   Future<void> _continue() async {
-    // const Snack(title: "Creating User");
-    // cirucluar progress indicator
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -156,6 +154,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
       avatar: singletoneUser.avatar as String,
     );
     await UserApi().postUser(newUserBoundary);
+
     // user details
     UserDetails userDetails = UserDetails.instance;
     userDetails.email = singletoneUser.email;
@@ -177,12 +176,12 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
       email: singletoneUser.email as String,
       superapp: '2023b.LiorAriely',
     );
-    debugPrint('UserId json:${userId.toJson().toString()}');
+
     // - createdBy
     final CreatedBy createdBy = CreatedBy(
       userId: userId,
     );
-    debugPrint('createdBy json: ${createdBy.toJson()}');
+
     ObjectBoundary objectBoundary = ObjectBoundary(
       objectId: ObjectId('2023b.LiorAriely', ""),
       type: 'EVENT',
@@ -193,7 +192,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
       createdBy: createdBy,
       objectDetails: userDetails.toJson(),
     );
-    debugPrint('objectBoundary json: ${objectBoundary.toJson()}');
+
     await ObjectApi().postObject(objectBoundary);
     _screenLogin();
   }
@@ -201,5 +200,13 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
   void _screenLogin() {
     Navigator.pop(context);
     Navigator.pushNamed(context, '/login');
+  }
+
+  Map<String, String> _getMapFromList(List<ItemObject> list) {
+    Map<String, String> map = {};
+    for (ItemObject item in list) {
+      map[item.id.toString()] = item.name;
+    }
+    return map;
   }
 }

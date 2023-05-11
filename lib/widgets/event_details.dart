@@ -34,7 +34,7 @@ class EventDetails extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Text(
-              event.date,
+              event.date as String,
               style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
