@@ -1,3 +1,5 @@
+import 'package:social_hive_client/model/item_object.dart';
+
 class UserDetails {
   // constructor
   String? email;
@@ -7,45 +9,41 @@ class UserDetails {
   String? gender;
   List<String>? genderPreferences;
 
-  static final UserDetails _instance = UserDetails._internal();
-
-  factory UserDetails(String email) {
-    _instance.email = email;
-    return _instance;
-  }
+  static UserDetails? _instance;
 
   UserDetails._internal();
 
-  // getters
-  String? get getEmail => email;
+  static UserDetails get instance {
+    _instance ??= UserDetails._internal();
+    return _instance!;
+  }
 
-  String? get getName => name;
+  set sexPreferences(List<ItemObject> sexPreferences) {}
 
-  String? get getPhoneNumber => phoneNumber;
+  set preferences(List<ItemObject> preferences) {}
 
-  List<String>? get getInterests => interests;
-
-  String? get getGender => gender;
-
-  List<String>? get getGenderPreferences => genderPreferences;
-
-  // setters
-  set setEmail(String? email) => this.email = email;
-
-  set setName(String? name) => this.name = name;
-
-  set setPhoneNumber(String? phoneNumber) => this.phoneNumber = phoneNumber;
-
-  set setInterests(List<String>? interests) => this.interests = interests;
-
-  set setGender(String? gender) => this.gender = gender;
-
-  set setGenderPreferences(List<String>? genderPreferences) =>
-      this.genderPreferences = genderPreferences;
-
-// toString
+  // toString
   @override
   String toString() {
-    return 'UserDetails{email: $email, name: $name, phoneNumber: $phoneNumber, interests: $interests, gender: $gender, genderPreferences: $genderPreferences}';
+    return 'email: $email\nname: $name\nphone: $phoneNumber\n interests: $interests\ngender: $gender\ngenderPreferences: $genderPreferences';
   }
+
+  // fromJson
+  UserDetails.fromJson(Map<String, dynamic> json)
+      : email = json['email'],
+        name = json['name'],
+        phoneNumber = json['phoneNumber'],
+        interests = json['interests'],
+        gender = json['gender'],
+        genderPreferences = json['genderPreferences'];
+
+  // toJson
+  Map<String, dynamic> toJson() => {
+        'email': email,
+        'name': name,
+        'phoneNumber': phoneNumber,
+        'intersts': interests,
+        'gender': gender,
+        'genderPreferences': genderPreferences
+      };
 }

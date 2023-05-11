@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:social_hive_client/constants/preferences.dart';
 import 'package:social_hive_client/constants/sex_preferences.dart';
+import 'package:social_hive_client/model/boundaries/object_boundary.dart';
 import 'package:social_hive_client/model/boundaries/user_boundary.dart';
 import 'package:social_hive_client/model/item_object.dart';
 import 'package:social_hive_client/model/singletone_user.dart';
+import 'package:social_hive_client/model/user_details.dart';
+import 'package:social_hive_client/rest_api/object_api.dart';
 import 'package:social_hive_client/rest_api/user_api.dart';
 import 'package:social_hive_client/widgets/multi_select_dialog.dart';
 import '../../widgets/build_drop_button.dart';
@@ -100,14 +103,22 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                   decoration: const InputDecoration(
                     hintText: 'Latitude',
                   ),
-                  validator: ValidationBuilder().maxLength(50).build(),
+                  validator: ValidationBuilder()
+                      .maxLength(50)
+                      .regExp(RegExp('^((?:[1-9][0-9]*)(?:\\.[0-9]+)?)\$'),
+                          'Not valid Latitude')
+                      .build(),
                 ),
                 TextFormField(
                   controller: _textFieldControllerLongitude,
                   decoration: const InputDecoration(
                     hintText: 'Longitude',
                   ),
-                  validator: ValidationBuilder().maxLength(50).build(),
+                  validator: ValidationBuilder()
+                      .maxLength(50)
+                      .regExp(RegExp('^((?:[1-9][0-9]*)(?:\\.[0-9]+)?)\$'),
+                          'Not valid Longitude')
+                      .build(),
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
@@ -146,13 +157,44 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
     );
     await UserApi().postUser(newUserBoundary);
     // user details
-    final String name = _textFieldControllerName.text;
-    final String phoneNumber = _textFieldControllerPhoneNumber.text;
-    final String latitude = _textFieldControllerLatitude.text;
-    final String longitude = _textFieldControllerLongitude.text;
-    final List<ItemObject> preferences = _selectedPreferences;
-    final String gender = dropdownValue.toString();
-    final List<ItemObject> sexPreferences = _selectedSexPreferences;
+    UserDetails userDetails = UserDetails.instance;
+    userDetails.email = singletoneUser.email;
+    userDetails.name = _textFieldControllerName.text;
+    userDetails.phoneNumber = _textFieldControllerPhoneNumber.text;
+    userDetails.preferences = _selectedPreferences;
+    userDetails.gender = dropdownValue.toString();
+    userDetails.sexPreferences = _selectedSexPreferences;
+
+    // Object boundary
+    // - location
+    final Location location = Location(
+      lat: double.parse(_textFieldControllerLatitude.text),
+      lng: double.parse(_textFieldControllerLongitude.text),
+    );
+    debugPrint('location json:${location.toJson()}');
+    // - userId
+    final UserId userId = UserId(
+      email: singletoneUser.email as String,
+      superapp: '2023b.LiorAriely',
+    );
+    debugPrint('UserId json:${userId.toJson().toString()}');
+    // - createdBy
+    final CreatedBy createdBy = CreatedBy(
+      userId: userId,
+    );
+    debugPrint('createdBy json: ${createdBy.toJson()}');
+    ObjectBoundary objectBoundary = ObjectBoundary(
+      objectId: ObjectId('2023b.LiorAriely', ""),
+      type: 'EVENT',
+      alias: 'EVENT',
+      active: true,
+      creationTimestamp: DateTime.now(),
+      location: location,
+      createdBy: createdBy,
+      objectDetails: userDetails.toJson(),
+    );
+    debugPrint('objectBoundary json: ${objectBoundary.toJson()}');
+    await ObjectApi().postObject(objectBoundary);
     _screenLogin();
   }
 
