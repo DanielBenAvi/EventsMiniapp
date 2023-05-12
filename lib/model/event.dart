@@ -1,22 +1,28 @@
+import 'package:social_hive_client/model/boundaries/object_boundary.dart';
+
 class Event {
   String name;
   String description;
-  String location;
+  Location location;
+  String contact;
   DateTime date;
-  String time;
   String image;
+  Map<String, dynamic> attendees;
+  Map<String, dynamic> preferences;
 
   Event(
       {required this.name,
       required this.description,
       required this.location,
+      required this.contact,
       required this.date,
-      required this.time,
-      required this.image});
+      required this.image,
+      required this.attendees,
+      required this.preferences});
 
   @override
   String toString() {
-    return 'Event{name: $name, description: $description, location: $location, date: $date, time: $time, image: $image}';
+    return 'Event{name: $name, description: $description, location: $location, date: $date, contact: $contact, image: $image, attendees: $attendees, preferences: $preferences}';
   }
 
   // toJson
@@ -25,9 +31,11 @@ class Event {
         'name': name,
         'description': description,
         'location': location,
-        'date': date,
-        'time': time,
+        'date': date.toIso8601String(),
+        'contact': contact,
         'image': image,
+        'attendees': attendees,
+        'preferences': preferences
       };
 
   // fromJson
@@ -35,7 +43,9 @@ class Event {
       : name = json['name'],
         description = json['description'],
         location = json['location'],
-        date = json['date'],
-        time = json['time'],
-        image = json['image'];
+        date = DateTime.parse(json['date']),
+        contact = json['contact'],
+        image = json['image'],
+        attendees = json['attendees'],
+        preferences = json['preferences'];
 }

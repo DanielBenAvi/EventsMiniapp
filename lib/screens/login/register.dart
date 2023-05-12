@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
-import 'package:social_hive_client/model/singletone_user.dart';
+import 'package:social_hive_client/model/singleton_user.dart';
 import 'package:social_hive_client/widgets/build_drop_button.dart';
 
 class Register extends StatefulWidget {
@@ -103,7 +103,7 @@ class _RegisterState extends State<Register> {
 
   void _continue() {
     // save all data to user object
-    SingletoneUser singletoneUser = SingletoneUser.instance;
+    SingletonUser singletoneUser = SingletonUser.instance;
     singletoneUser.email = _textFieldControllerEmail.text;
     singletoneUser.username = _textFieldControllerUsername.text;
     singletoneUser.role = dropdownValue;

@@ -1,13 +1,11 @@
-import 'item_object.dart';
-
 class UserDetails {
   // constructor
   String? email;
   String? name;
   String? phoneNumber;
-  List<ItemObject>? interests;
+  Map<String, dynamic>? interests;
   String? gender;
-  List<ItemObject>? genderPreferences;
+  Map<String, dynamic>? genderPreferences;
 
   static UserDetails? _instance;
 
@@ -17,10 +15,6 @@ class UserDetails {
     _instance ??= UserDetails._internal();
     return _instance!;
   }
-
-  set sexPreferences(List<ItemObject> sexPreferences) {}
-
-  set preferences(List<ItemObject> preferences) {}
 
   // toString
   @override
@@ -42,7 +36,7 @@ class UserDetails {
         'email': email,
         'name': name,
         'phoneNumber': phoneNumber,
-        'intersts': interests,
+        'interests': interests,
         'gender': gender,
         'genderPreferences': genderPreferences
       };

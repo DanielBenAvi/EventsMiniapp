@@ -5,11 +5,12 @@ import 'package:social_hive_client/constants/sex_preferences.dart';
 import 'package:social_hive_client/model/boundaries/object_boundary.dart';
 import 'package:social_hive_client/model/boundaries/user_boundary.dart';
 import 'package:social_hive_client/model/item_object.dart';
-import 'package:social_hive_client/model/singletone_user.dart';
+import 'package:social_hive_client/model/singleton_user.dart';
 import 'package:social_hive_client/model/user_details.dart';
 import 'package:social_hive_client/rest_api/object_api.dart';
 import 'package:social_hive_client/rest_api/user_api.dart';
 import 'package:social_hive_client/widgets/multi_select_dialog.dart';
+
 import '../../widgets/build_drop_button.dart';
 
 const List<String> genderList = <String>['Male', 'Female', 'Other'];
@@ -146,34 +147,34 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
       },
     );
     // user
-    SingletoneUser singletoneUser = SingletoneUser.instance;
+    SingletonUser singletonUser = SingletonUser.instance;
     NewUserBoundary newUserBoundary = NewUserBoundary(
-      email: singletoneUser.email as String,
-      username: singletoneUser.username as String,
-      role: singletoneUser.role as String,
-      avatar: singletoneUser.avatar as String,
+      email: singletonUser.email as String,
+      username: singletonUser.username as String,
+      role: singletonUser.role as String,
+      avatar: singletonUser.avatar as String,
     );
     await UserApi().postUser(newUserBoundary);
 
     // user details
     UserDetails userDetails = UserDetails.instance;
-    userDetails.email = singletoneUser.email;
+    userDetails.email = singletonUser.email;
     userDetails.name = _textFieldControllerName.text;
     userDetails.phoneNumber = _textFieldControllerPhoneNumber.text;
-    userDetails.preferences = _selectedPreferences;
+    userDetails.interests = _getMapFromList(_selectedPreferences);
     userDetails.gender = dropdownValue.toString();
-    userDetails.sexPreferences = _selectedSexPreferences;
+    userDetails.genderPreferences = _getMapFromList(_selectedSexPreferences);
 
+    debugPrint('userDetails json:${userDetails.toJson()}');
     // Object boundary
     // - location
     final Location location = Location(
       lat: double.parse(_textFieldControllerLatitude.text),
       lng: double.parse(_textFieldControllerLongitude.text),
     );
-    debugPrint('location json:${location.toJson()}');
     // - userId
     final UserId userId = UserId(
-      email: singletoneUser.email as String,
+      email: singletonUser.email as String,
       superapp: '2023b.LiorAriely',
     );
 
@@ -184,8 +185,8 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
 
     ObjectBoundary objectBoundary = ObjectBoundary(
       objectId: ObjectId('2023b.LiorAriely', ""),
-      type: 'EVENT',
-      alias: 'EVENT',
+      type: 'USER_DETAILS',
+      alias: 'UserDetails',
       active: true,
       creationTimestamp: DateTime.now(),
       location: location,
@@ -202,11 +203,14 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
     Navigator.pushNamed(context, '/login');
   }
 
-  Map<String, String> _getMapFromList(List<ItemObject> list) {
+  Map<String, dynamic> _getMapFromList(List<ItemObject> list) {
     Map<String, String> map = {};
+    int i = 0;
     for (ItemObject item in list) {
-      map[item.id.toString()] = item.name;
+      map[i.toString()] = item.name;
+      i++;
     }
+    debugPrint('map:$map');
     return map;
   }
 }

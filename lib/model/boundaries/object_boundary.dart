@@ -82,6 +82,11 @@ class Location {
         'lat': lat,
         'lng': lng,
       };
+
+  @override
+  String toString() {
+    return 'Location{lat: $lat, lng: $lng}';
+  }
 }
 
 class CreatedBy {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:social_hive_client/model/boundaries/user_boundary.dart';
-import 'package:social_hive_client/model/singletone_user.dart';
+import 'package:social_hive_client/model/singleton_user.dart';
 import 'package:social_hive_client/rest_api/user_api.dart';
 
 class Login extends StatefulWidget {
@@ -69,7 +69,7 @@ class _LoginState extends State<Login> {
     UserBoundary userBoundary =
         await UserApi().fetchUser(_textFieldEmailController.text);
 
-    SingletoneUser singletoneUser = SingletoneUser.instance;
+    SingletonUser singletoneUser = SingletonUser.instance;
     singletoneUser.email = userBoundary.userId.email;
     singletoneUser.username = userBoundary.username;
     singletoneUser.avatar = userBoundary.avatar;

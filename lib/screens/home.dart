@@ -1,36 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:social_hive_client/model/boundaries/object_boundary.dart';
 import 'package:social_hive_client/model/event.dart';
-import 'package:social_hive_client/model/singletone_user.dart';
-import 'package:social_hive_client/widgets/event_details.dart';
+import 'package:social_hive_client/model/singleton_user.dart';
+import 'package:social_hive_client/screens/event_details.dart';
 
 // demo list of events
 final List<Event> events = <Event>[
   Event(
     name: 'Dance Party',
     description: 'Dance party with DJ',
-    location: 'Bucharest',
-    date: DateTime(
-        int.parse('2021'), int.parse('11'), int.parse('10')), // 2021-11-10
-    time: '20:00',
+    location: Location(lat: 45.657975, lng: 25.601198),
+    date: DateTime.parse('2023-07-20 20:18:04Z'),
     image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819',
+    attendees: {'0': 'demo@gmail.com'},
+    preferences: {'0': 'Dance'},
+    contact: '+972-50-1234567',
   ),
   Event(
     name: 'Ski',
     description: 'Ski in the mountains',
-    location: 'Busteni',
-    date: DateTime(
-        int.parse('2021'), int.parse('11'), int.parse('10')), // 2021-11-10
-    time: '08:00',
+    location: Location(lat: 45.657975, lng: 25.601198),
+    date: DateTime.parse('2023-07-20 20:18:04Z'),
+// 1969-07-20
     image: 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256',
+    attendees: {'0': 'demo@gmail.com'},
+    preferences: {'0': 'Ski'},
+    contact: '+972-50-1234567',
   ),
   Event(
     name: 'Hiking',
     description: 'Hiking in the mountains',
-    location: 'Bucegi',
-    date: DateTime(
-        int.parse('2021'), int.parse('11'), int.parse('10')), // 2021-11-10
-    time: '08:00',
+    location: Location(lat: 45.657975, lng: 25.601198),
+    date: DateTime.parse('2023-07-20 20:18:04Z'),
     image: 'https://images.unsplash.com/photo-1551632811-561732d1e306',
+    attendees: {'0': 'demo@gmail.com'},
+    preferences: {'0': 'Tennis'},
+    contact: '+972-50-1234567',
   ),
 ];
 
@@ -42,13 +47,13 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  SingletoneUser singletoneUser = SingletoneUser.instance;
+  SingletonUser singletonUser = SingletonUser.instance;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(singletoneUser.username ?? 'Home'),
+        title: Text(singletonUser.username ?? 'Home'),
       ),
       body: RefreshIndicator(
         onRefresh: _refreshData,
