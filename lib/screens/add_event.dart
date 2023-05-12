@@ -94,7 +94,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
                 ),
                 const SizedBox(height: 20),
                 OutlinedButton(
-                    onPressed: () {}, child: const Text('Choose Location')),
+                    onPressed: _addLocation,
+                    child: const Text('Choose Location')),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
@@ -203,5 +204,9 @@ class _AddEventScreenState extends State<AddEventScreen> {
   void _screenHome() {
     Navigator.pop(context);
     Navigator.pushNamed(context, '/home');
+  }
+
+  void _addLocation() {
+    Navigator.pushNamed(context, '/choose_location');
   }
 }
