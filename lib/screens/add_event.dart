@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
+import 'package:http/http.dart' as http;
 import 'package:social_hive_client/constants/Constants.dart';
 import 'package:social_hive_client/constants/preferences.dart';
 import 'package:social_hive_client/model/boundaries/object_boundary.dart';
@@ -27,7 +28,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
       TextEditingController();
   final TextEditingController _textFieldControllerDescription =
       TextEditingController();
-  TextEditingController _locationController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -182,7 +183,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
       alias: 'Event',
       active: true,
       creationTimestamp: DateTime.now(),
-      location: Location(
+      location: LocationBoundary(
         lat: 10.2,
         lng: 10.2,
       ),
@@ -214,13 +215,16 @@ class _AddEventScreenState extends State<AddEventScreen> {
             const InputDecoration(hintText: "Search your location"),
         debounceTime: 800,
         countries: const ["il"],
-        isLatLngRequired: true,
+        isLatLngRequired: false,
         getPlaceDetailWithLatLng: (Prediction prediction) {},
-        itmClick: (Prediction prediction) {
+        itmClick: (Prediction prediction) async {
           _locationController.text = prediction.description!;
           _locationController.selection = TextSelection.fromPosition(
               TextPosition(offset: prediction.description!.length));
-          debugPrint(prediction.toJson().toString());
+
+          // get lat lng
+          String latLng = await getPointToLngLat(prediction.description!);
+          debugPrint('latLng:$latLng');
         },
       ),
     );
@@ -231,4 +235,16 @@ class _AddEventScreenState extends State<AddEventScreen> {
     Navigator.pushNamed(context, '/home');
   }
 
+  Future<String> getPointToLngLat(String point) async {
+    final encodedPoint = Uri.encodeQueryComponent(point);
+    final url = Uri.https('maps.googleapis.com', '/maps/api/geocode/json',
+        {'address': encodedPoint, 'key': apiKey});
+
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Failed to fetch data');
+    }
+  }
 }

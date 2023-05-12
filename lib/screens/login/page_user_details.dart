@@ -168,7 +168,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
     debugPrint('userDetails json:${userDetails.toJson()}');
     // Object boundary
     // - location
-    final Location location = Location(
+    final LocationBoundary location = LocationBoundary(
       lat: double.parse(_textFieldControllerLatitude.text),
       lng: double.parse(_textFieldControllerLongitude.text),
     );

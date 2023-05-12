@@ -6,7 +6,7 @@ class ObjectBoundary {
   String alias;
   bool active;
   DateTime creationTimestamp;
-  Location location;
+  LocationBoundary location;
   CreatedBy createdBy;
   Map<String, dynamic> objectDetails;
 
@@ -27,8 +27,8 @@ class ObjectBoundary {
         type = json['type'],
         alias = json['alias'],
         active = json['active'],
-        creationTimestamp = DateTime.parse(json['creationTimestamp']),
-        location = Location.fromJson(json['location']),
+          creationTimestamp = DateTime.parse(json['creationTimestamp']),
+        location = LocationBoundary.fromJson(json['location']),
         createdBy = CreatedBy.fromJson(json['createdBy']),
         objectDetails = json['objectDetails'];
 
@@ -66,14 +66,14 @@ class ObjectId {
       };
 }
 
-class Location {
+class LocationBoundary {
   double lat;
   double lng;
 
-  Location({required this.lat, required this.lng});
+  LocationBoundary({required this.lat, required this.lng});
 
   // fromJson
-  Location.fromJson(Map<String, dynamic> json)
+  LocationBoundary.fromJson(Map<String, dynamic> json)
       : lat = json['lat'],
         lng = json['lng'];
 
