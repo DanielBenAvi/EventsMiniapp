@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
+import 'package:google_places_flutter/google_places_flutter.dart';
+import 'package:google_places_flutter/model/prediction.dart';
+import 'package:social_hive_client/constants/Constants.dart';
 import 'package:social_hive_client/constants/preferences.dart';
 import 'package:social_hive_client/model/boundaries/object_boundary.dart';
 import 'package:social_hive_client/model/event.dart';
@@ -24,6 +27,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
       TextEditingController();
   final TextEditingController _textFieldControllerDescription =
       TextEditingController();
+  TextEditingController _locationController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
 
   DateTime dateTime = DateTime(DateTime.now().year, DateTime.now().month,
@@ -93,9 +98,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   validator: ValidationBuilder().build(),
                 ),
                 const SizedBox(height: 20),
-                OutlinedButton(
-                    onPressed: _addLocation,
-                    child: const Text('Choose Location')),
+                placesAutoCompleteTextField(),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
@@ -165,10 +168,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
       contact: _textFieldControllerContact.text,
       description: _textFieldControllerDescription.text,
       preferences: _getMapFromList(_selectedPreferences),
-      location: Location(
-        lat: 10.2,
-        lng: 10.2,
-      ),
+      location: _locationController.text,
       image:
           'https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg',
       attendees: {},
@@ -182,7 +182,10 @@ class _AddEventScreenState extends State<AddEventScreen> {
       alias: 'Event',
       active: true,
       creationTimestamp: DateTime.now(),
-      location: event.location,
+      location: Location(
+        lat: 10.2,
+        lng: 10.2,
+      ),
       createdBy: userDetails.createdBy,
       objectDetails: event.toJson(),
     );
@@ -201,12 +204,31 @@ class _AddEventScreenState extends State<AddEventScreen> {
     return map;
   }
 
+  placesAutoCompleteTextField() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: GooglePlaceAutoCompleteTextField(
+        textEditingController: _locationController,
+        googleAPIKey: apiKey,
+        inputDecoration:
+            const InputDecoration(hintText: "Search your location"),
+        debounceTime: 800,
+        countries: const ["il"],
+        isLatLngRequired: true,
+        getPlaceDetailWithLatLng: (Prediction prediction) {},
+        itmClick: (Prediction prediction) {
+          _locationController.text = prediction.description!;
+          _locationController.selection = TextSelection.fromPosition(
+              TextPosition(offset: prediction.description!.length));
+          debugPrint(prediction.toJson().toString());
+        },
+      ),
+    );
+  }
+
   void _screenHome() {
     Navigator.pop(context);
     Navigator.pushNamed(context, '/home');
   }
 
-  void _addLocation() {
-    Navigator.pushNamed(context, '/choose_location');
-  }
 }

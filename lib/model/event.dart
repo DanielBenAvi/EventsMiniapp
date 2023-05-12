@@ -1,9 +1,7 @@
-import 'package:social_hive_client/model/boundaries/object_boundary.dart';
-
 class Event {
   String name;
   String description;
-  Location location;
+  String location;
   String contact;
   DateTime date;
   String image;

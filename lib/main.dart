@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:social_hive_client/screens/add_event.dart';
-import 'package:social_hive_client/screens/choose_location_screen.dart';
 import 'package:social_hive_client/screens/home.dart';
 import 'package:social_hive_client/screens/login/login.dart';
 import 'package:social_hive_client/screens/login/page_user_details.dart';
@@ -18,6 +17,5 @@ void main() => runApp(MaterialApp(
         '/profile': (context) => const ProfileScreen(),
         '/image_picker': (context) => const ImagePickerScreen(),
         '/add_event': (context) => const AddEventScreen(),
-        '/choose_location': (context) => const ChooseLocationScreen(),
       },
     ));

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:social_hive_client/model/boundaries/object_boundary.dart';
 import 'package:social_hive_client/model/event.dart';
 import 'package:social_hive_client/model/singleton_user.dart';
 import 'package:social_hive_client/screens/event_details.dart';
@@ -9,7 +8,7 @@ final List<Event> events = <Event>[
   Event(
     name: 'Dance Party',
     description: 'Dance party with DJ',
-    location: Location(lat: 45.657975, lng: 25.601198),
+    location: 'Tel Aviv, dizengoff 50',
     date: DateTime.parse('2023-07-20 20:18:04Z'),
     image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819',
     attendees: {'0': 'demo@gmail.com'},
@@ -19,7 +18,7 @@ final List<Event> events = <Event>[
   Event(
     name: 'Ski',
     description: 'Ski in the mountains',
-    location: Location(lat: 45.657975, lng: 25.601198),
+    location: 'bansko, bulgaria',
     date: DateTime.parse('2023-07-20 20:18:04Z'),
 // 1969-07-20
     image: 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256',
@@ -30,7 +29,7 @@ final List<Event> events = <Event>[
   Event(
     name: 'Hiking',
     description: 'Hiking in the mountains',
-    location: Location(lat: 45.657975, lng: 25.601198),
+    location: 'golan',
     date: DateTime.parse('2023-07-20 20:18:04Z'),
     image: 'https://images.unsplash.com/photo-1551632811-561732d1e306',
     attendees: {'0': 'demo@gmail.com'},
