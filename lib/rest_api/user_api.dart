@@ -1,6 +1,8 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:http/retry.dart';
+
 import '../model/boundaries/user_boundary.dart';
 
 /// UserApi class
@@ -25,8 +27,20 @@ class UserApi {
   }
 
   /// update User method
-  Map<String, dynamic> putUser(Map<String, dynamic> updateUserBoundary) {
-    return updateUserBoundary;
+  Future putUser(String email, UserBoundary updateUserBoundary) async {
+    final response = await http.put(
+      Uri.parse('http://localhost:8084/superapp/users/2023b.LiorAriely/$email'),
+      headers: <String, String>{
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      encoding: Encoding.getByName('utf-8'),
+      body: jsonEncode(updateUserBoundary),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to update user.');
+    }
   }
 
   /// get User method

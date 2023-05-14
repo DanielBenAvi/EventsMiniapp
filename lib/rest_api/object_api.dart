@@ -42,4 +42,20 @@ class ObjectApi {
       client.close();
     }
   }
+
+  Future<List<ObjectBoundary>> getAllObjects() async {
+    final client = RetryClient(http.Client());
+    final response =
+        await http.get(Uri.parse('http://localhost:8084/superapp/objects'));
+    if (response.statusCode == 200) {
+      List<dynamic> objects = jsonDecode(response.body);
+      List<ObjectBoundary> objectBoundaries = [];
+      for (Map<String, dynamic> object in objects) {
+        objectBoundaries.add(ObjectBoundary.fromJson(object));
+      }
+      return objectBoundaries;
+    } else {
+      throw Exception('Failed to load objects');
+    }
+  }
 }

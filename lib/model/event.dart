@@ -1,4 +1,4 @@
-class Event {
+class EventObject {
   String name;
   String description;
   String location;
@@ -8,7 +8,7 @@ class Event {
   Map<String, dynamic> attendees;
   Map<String, dynamic> preferences;
 
-  Event(
+  EventObject(
       {required this.name,
       required this.description,
       required this.location,
@@ -37,7 +37,7 @@ class Event {
       };
 
   // fromJson
-  Event.fromJson(Map<String, dynamic> json)
+  EventObject.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         description = json['description'],
         location = json['location'],

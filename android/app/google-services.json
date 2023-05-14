@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "533745140020",
+    "project_id": "social-hive-places",
+    "storage_bucket": "social-hive-places.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:533745140020:android:7dd9fe676ec30cfdb9e561",
+        "android_client_info": {
+          "package_name": "com.example.social_hive_client"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "533745140020-1kb42g6i8lvt4kmk1h29hu18cnipbru6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlvYOygHInFvjHH6c2clLQR_67KJgwbSs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "533745140020-1kb42g6i8lvt4kmk1h29hu18cnipbru6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,3 +1,7 @@
+import 'dart:typed_data';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
@@ -32,8 +36,17 @@ class _AddEventScreenState extends State<AddEventScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
-  DateTime dateTime = DateTime(DateTime.now().year, DateTime.now().month,
-      DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
+  DateTime dateTime = DateTime(
+    DateTime.now().year,
+    DateTime.now().month,
+    DateTime.now().day,
+    DateTime.now().hour,
+    DateTime.now().minute,
+  );
+
+  PlatformFile? pickedFile;
+  UploadTask? uploadTask;
+  String? downloadURL;
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +72,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: ValidationBuilder().maxLength(50).build(),
                 ),
+                const SizedBox(height: 20),
+                placesAutoCompleteTextField(),
                 const SizedBox(height: 20),
                 TextFormField(
                   controller: _textFieldControllerContact,
@@ -99,7 +114,18 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   validator: ValidationBuilder().build(),
                 ),
                 const SizedBox(height: 20),
-                placesAutoCompleteTextField(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    OutlinedButton(
+                        onPressed: _filePiker, child: const Text('Add Image')),
+                    Image.network(
+                      downloadURL ?? 'https://picsum.photos/250?image=9',
+                      width: 100,
+                      height: 100,
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
@@ -139,6 +165,26 @@ class _AddEventScreenState extends State<AddEventScreen> {
     setState(() => this.dateTime = dateTime);
   }
 
+  Future _filePiker() async {
+    final result = await FilePicker.platform.pickFiles();
+    if (result == null) return;
+
+    setState(() {
+      pickedFile = result.files.first;
+    });
+    Uint8List? uploadFile = result.files.single.bytes;
+    final path = 'files/${pickedFile!.name}';
+
+    final ref = FirebaseStorage.instance.ref().child(path);
+    uploadTask = ref.putData(uploadFile!);
+    final snapshot = await uploadTask!.whenComplete(() {});
+    final urlDownload = await snapshot.ref.getDownloadURL();
+    setState(() {
+      downloadURL = urlDownload;
+    });
+    debugPrint('Download-Link: $urlDownload');
+  }
+
   Future<DateTime?> pickDate() => showDatePicker(
         context: context,
         initialDate: dateTime,
@@ -164,14 +210,13 @@ class _AddEventScreenState extends State<AddEventScreen> {
     // create event
     debugPrint('\n - Create Event');
     SingletonUser userDetails = SingletonUser.instance;
-    Event event = Event(
+    EventObject event = EventObject(
       name: _textFieldControllerName.text,
       contact: _textFieldControllerContact.text,
       description: _textFieldControllerDescription.text,
       preferences: _getMapFromList(_selectedPreferences),
       location: _locationController.text,
-      image:
-          'https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg',
+      image: downloadURL ?? 'https://picsum.photos/250?image=9',
       attendees: {},
       date: dateTime,
     );
@@ -215,16 +260,12 @@ class _AddEventScreenState extends State<AddEventScreen> {
             const InputDecoration(hintText: "Search your location"),
         debounceTime: 800,
         countries: const ["il"],
-        isLatLngRequired: false,
+        isLatLngRequired: true,
         getPlaceDetailWithLatLng: (Prediction prediction) {},
         itmClick: (Prediction prediction) async {
           _locationController.text = prediction.description!;
           _locationController.selection = TextSelection.fromPosition(
               TextPosition(offset: prediction.description!.length));
-
-          // get lat lng
-          String latLng = await getPointToLngLat(prediction.description!);
-          debugPrint('latLng:$latLng');
         },
       ),
     );

@@ -1,26 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:social_hive_client/model/boundaries/object_boundary.dart';
 import 'package:social_hive_client/model/event.dart';
 import 'package:social_hive_client/model/singleton_user.dart';
-import 'package:social_hive_client/rest_api/object_api.dart';
-import 'package:social_hive_client/screens/event_details.dart';
 
-// demo list of events
-final List<EventObject> events = <EventObject>[];
+import '../model/boundaries/object_boundary.dart';
+import '../rest_api/object_api.dart';
+import 'event_details.dart';
 
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+class MyEventsScreen extends StatefulWidget {
+  const MyEventsScreen({Key? key}) : super(key: key);
 
   @override
-  State<Home> createState() => _HomeState();
+  State<MyEventsScreen> createState() => _MyEventsScreenState();
 }
 
-class _HomeState extends State<Home> {
+class _MyEventsScreenState extends State<MyEventsScreen> {
   SingletonUser singletonUser = SingletonUser.instance;
+  final List<EventObject> events = <EventObject>[];
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _refreshData();
   }
@@ -29,7 +27,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(singletonUser.username ?? 'Home'),
+        title: const Text('My Events'),
         actions: [
           IconButton(
             onPressed: () {
@@ -59,51 +57,6 @@ class _HomeState extends State<Home> {
           },
         ),
       ),
-      drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text(
-                'Menu',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('Profile'),
-              onTap: () {
-                _profileScreen(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.event_available),
-              title: const Text('My Events'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/my_events');
-              },
-            ),
-            ListTile(
-                leading: const Icon(Icons.logout),
-                title: const Text('Logout'),
-                onTap: () {
-                  _loginScreen(context);
-                }),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/add_event');
-        },
-        child: const Icon(Icons.add),
-      ),
     );
   }
 
@@ -118,6 +71,10 @@ class _HomeState extends State<Home> {
     objectBoundaries.removeWhere((element) =>
         DateTime.parse(element.objectDetails['date']).isBefore(DateTime.now()));
 
+    // remove all events that are not mine
+    objectBoundaries.removeWhere(
+        (element) => element.createdBy.userId.email != singletonUser.email);
+
     // print all objects
     for (var element in objectBoundaries) {
       debugPrint(element.toJson().toString());
@@ -131,14 +88,5 @@ class _HomeState extends State<Home> {
         events.add(EventObject.fromJson(element.objectDetails));
       }
     });
-  }
-
-  void _profileScreen(BuildContext context) {
-    Navigator.pushNamed(context, '/profile');
-  }
-
-  void _loginScreen(BuildContext context) {
-    Navigator.pop(context);
-    Navigator.pushNamed(context, '/login');
   }
 }

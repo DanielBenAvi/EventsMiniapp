@@ -4,7 +4,7 @@ import 'package:social_hive_client/model/event.dart';
 class EventDetails extends StatelessWidget {
   const EventDetails({super.key, required this.event});
 
-  final Event event;
+  final EventObject event;
 
   @override
   Widget build(BuildContext context) {
