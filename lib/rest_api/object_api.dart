@@ -5,13 +5,14 @@ import 'package:http/http.dart' as http;
 import 'package:http/retry.dart';
 import 'package:social_hive_client/model/boundaries/object_boundary.dart';
 import 'package:social_hive_client/model/singleton_user.dart';
+import 'package:social_hive_client/rest_api/base_api.dart';
 
-class ObjectApi {
+class ObjectApi extends BaseApi {
   Future<ObjectBoundary> postObject(ObjectBoundary objectBoundary) async {
     debugPrint('\n -- postObject');
     // create user
     final response = await http.post(
-      Uri.parse('http://localhost:8084/superapp/objects'),
+      Uri.parse('http://$host:$portNumber/superapp/objects'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -34,7 +35,7 @@ class ObjectApi {
   Future<ObjectBoundary> getObjectBoundary(String internalObjectId) async {
     final client = RetryClient(http.Client());
     final response = await http.get(Uri.parse(
-        'http://localhost:8084/superapp/objects/2023b.LiorAriely/$internalObjectId'));
+        'http://$host:$portNumber/superapp/objects/2023b.LiorAriely/$internalObjectId'));
     try {
       Map<String, dynamic> object = jsonDecode(response.body);
       return ObjectBoundary.fromJson(object);
@@ -46,7 +47,7 @@ class ObjectApi {
   Future<List<ObjectBoundary>> getAllObjects() async {
     final client = RetryClient(http.Client());
     final response =
-        await http.get(Uri.parse('http://localhost:8084/superapp/objects'));
+        await http.get(Uri.parse('http://$host:$portNumber/superapp/objects'));
     if (response.statusCode == 200) {
       List<dynamic> objects = jsonDecode(response.body);
       List<ObjectBoundary> objectBoundaries = [];

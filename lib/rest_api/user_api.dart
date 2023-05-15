@@ -4,14 +4,15 @@ import 'package:http/http.dart' as http;
 import 'package:http/retry.dart';
 
 import '../model/boundaries/user_boundary.dart';
+import 'base_api.dart';
 
 /// UserApi class
-class UserApi {
+class UserApi extends BaseApi {
   /// create User method
   Future<UserBoundary> postUser(NewUserBoundary newUserBoundary) async {
     // create user
     final response = await http.post(
-      Uri.parse('http://localhost:8084/superapp/users'),
+      Uri.parse('http://$host:$portNumber/superapp/users'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -29,7 +30,8 @@ class UserApi {
   /// update User method
   Future putUser(String email, UserBoundary updateUserBoundary) async {
     final response = await http.put(
-      Uri.parse('http://localhost:8084/superapp/users/2023b.LiorAriely/$email'),
+      Uri.parse(
+          'http://$host:$portNumber/superapp/users/2023b.LiorAriely/$email'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -47,7 +49,7 @@ class UserApi {
   Future<UserBoundary> fetchUser(String userEmail) async {
     final client = RetryClient(http.Client());
     final response = await http.get(Uri.parse(
-        'http://localhost:8084/superapp/users/login/2023b.LiorAriely/$userEmail'));
+        'http://$host:$portNumber/superapp/users/login/2023b.LiorAriely/$userEmail'));
     try {
       Map<String, dynamic> userMap = jsonDecode(response.body);
       return UserBoundary.fromJson(userMap);
