@@ -4,14 +4,14 @@ import 'package:social_hive_client/model/boundaries/user_boundary.dart';
 import 'package:social_hive_client/model/singleton_user.dart';
 import 'package:social_hive_client/rest_api/user_api.dart';
 
-class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+class ScreenLogin extends StatefulWidget {
+  const ScreenLogin({Key? key}) : super(key: key);
 
   @override
-  State<Login> createState() => _LoginState();
+  State<ScreenLogin> createState() => _ScreenLoginState();
 }
 
-class _LoginState extends State<Login> {
+class _ScreenLoginState extends State<ScreenLogin> {
   final _textFieldEmailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 

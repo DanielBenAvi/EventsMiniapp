@@ -1,13 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:social_hive_client/screens/add_event.dart';
-import 'package:social_hive_client/screens/home.dart';
-import 'package:social_hive_client/screens/login/login.dart';
-import 'package:social_hive_client/screens/login/page_user_details.dart';
-import 'package:social_hive_client/screens/login/register.dart';
-import 'package:social_hive_client/screens/my_events.dart';
-import 'package:social_hive_client/screens/profile.dart';
+import 'package:social_hive_client/screens/screen_add_event.dart';
+import 'package:social_hive_client/screens/screen_explore_events.dart';
+import 'package:social_hive_client/screens/screen_home.dart';
+import 'package:social_hive_client/screens/login/screen_login.dart';
+import 'package:social_hive_client/screens/login/screen_user_details.dart';
+import 'package:social_hive_client/screens/login/screen_register.dart';
+import 'package:social_hive_client/screens/screen_my_events.dart';
+import 'package:social_hive_client/screens/screen_profile.dart';
 import 'package:social_hive_client/widgets/image_picker.dart';
+
 import 'firebase_options.dart';
 
 void main() async {
@@ -17,7 +19,6 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-
   runApp(
     MaterialApp(
       title: 'Social Hive',
@@ -26,14 +27,15 @@ void main() async {
       ),
       initialRoute: '/login',
       routes: {
-        '/login': (context) => const Login(),
-        '/register': (context) => const Register(),
-        '/user_details': (context) => const UserDetailsScreen(),
-        '/home': (context) => const Home(),
-        '/profile': (context) => const ProfileScreen(),
-        '/image_picker': (context) => const ImagePickerScreen(),
-        '/add_event': (context) => const AddEventScreen(),
-        '/my_events': (context) => const MyEventsScreen(),
+        '/login': (context) => const ScreenLogin(),
+        '/register': (context) => const ScreenRegister(),
+        '/user_details': (context) => const ScreenUserDetails(),
+        '/home': (context) => const ScreenHome(),
+        '/profile': (context) => const ScreenProfile(),
+        '/image_picker': (context) => const ScreenImagePicker(),
+        '/add_event': (context) => const ScreenAddEvent(),
+        '/my_events': (context) => const ScreenMyEvents(),
+        '/explore_events': (context) => const ScreenExploreEvents(),
       },
     ),
   );

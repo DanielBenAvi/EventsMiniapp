@@ -3,14 +3,14 @@ import 'package:form_validator/form_validator.dart';
 import 'package:social_hive_client/model/singleton_user.dart';
 import 'package:social_hive_client/widgets/build_drop_button.dart';
 
-class Register extends StatefulWidget {
-  const Register({Key? key}) : super(key: key);
+class ScreenRegister extends StatefulWidget {
+  const ScreenRegister({Key? key}) : super(key: key);
 
   @override
-  State<Register> createState() => _RegisterState();
+  State<ScreenRegister> createState() => _ScreenRegisterState();
 }
 
-class _RegisterState extends State<Register> {
+class _ScreenRegisterState extends State<ScreenRegister> {
   final _textFieldControllerEmail = TextEditingController();
   final _textFieldControllerUsername = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -25,6 +25,7 @@ class _RegisterState extends State<Register> {
   ];
 
   late String dropdownValue = roles.first;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -17,14 +17,14 @@ import 'package:social_hive_client/widgets/multi_select_dialog.dart';
 
 import '../model/item_object.dart';
 
-class AddEventScreen extends StatefulWidget {
-  const AddEventScreen({super.key});
+class ScreenAddEvent extends StatefulWidget {
+  const ScreenAddEvent({super.key});
 
   @override
-  State<AddEventScreen> createState() => _AddEventScreenState();
+  State<ScreenAddEvent> createState() => _ScreenAddEventState();
 }
 
-class _AddEventScreenState extends State<AddEventScreen> {
+class _ScreenAddEventState extends State<ScreenAddEvent> {
   List<ItemObject> _selectedPreferences = [];
   final TextEditingController _textFieldControllerName =
       TextEditingController();

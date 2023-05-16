@@ -20,14 +20,14 @@ const List<Icon> iconList = <Icon>[
   Icon(IconData(0xf888, fontFamily: 'MaterialIcons')),
 ];
 
-class UserDetailsScreen extends StatefulWidget {
-  const UserDetailsScreen({Key? key}) : super(key: key);
+class ScreenUserDetails extends StatefulWidget {
+  const ScreenUserDetails({Key? key}) : super(key: key);
 
   @override
-  State<UserDetailsScreen> createState() => _UserDetailsScreenState();
+  State<ScreenUserDetails> createState() => _ScreenUserDetailsState();
 }
 
-class _UserDetailsScreenState extends State<UserDetailsScreen> {
+class _ScreenUserDetailsState extends State<ScreenUserDetails> {
   final _textFieldControllerName = TextEditingController();
   final _textFieldControllerPhoneNumber = TextEditingController();
   final _textFieldControllerLatitude = TextEditingController();

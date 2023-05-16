@@ -3,24 +3,23 @@ import 'package:social_hive_client/model/boundaries/object_boundary.dart';
 import 'package:social_hive_client/model/event.dart';
 import 'package:social_hive_client/model/singleton_user.dart';
 import 'package:social_hive_client/rest_api/object_api.dart';
-import 'package:social_hive_client/screens/event_details.dart';
+import 'package:social_hive_client/screens/screen_event_details.dart';
 
 // demo list of events
 final List<EventObject> events = <EventObject>[];
 
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+class ScreenHome extends StatefulWidget {
+  const ScreenHome({Key? key}) : super(key: key);
 
   @override
-  State<Home> createState() => _HomeState();
+  State<ScreenHome> createState() => _ScreenHomeState();
 }
 
-class _HomeState extends State<Home> {
+class _ScreenHomeState extends State<ScreenHome> {
   SingletonUser singletonUser = SingletonUser.instance;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _refreshData();
   }
@@ -29,7 +28,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(singletonUser.username ?? 'Home'),
+        title: const Text('Events to Attend'),
         actions: [
           IconButton(
             onPressed: () {
@@ -52,7 +51,7 @@ class _HomeState extends State<Home> {
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) =>
-                          EventDetails(event: events[index])));
+                          ScreenEventDetails(event: events[index])));
                 },
               ),
             );
@@ -90,6 +89,14 @@ class _HomeState extends State<Home> {
               },
             ),
             ListTile(
+              leading: const Icon(Icons.explore_outlined),
+              title: const Text('Explore Events'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/explore_events');
+              },
+            ),
+            ListTile(
                 leading: const Icon(Icons.logout),
                 title: const Text('Logout'),
                 onTap: () {
@@ -111,17 +118,16 @@ class _HomeState extends State<Home> {
     // get list of ObjectBoundary from server
     List<ObjectBoundary> objectBoundaries = await ObjectApi().getAllObjects();
 
+    if (objectBoundaries.isEmpty) {
+      return;
+    }
+
     // remove all type != event
     objectBoundaries.removeWhere((element) => element.type != 'EVENT');
 
     // remove all events that are not in the future
     objectBoundaries.removeWhere((element) =>
         DateTime.parse(element.objectDetails['date']).isBefore(DateTime.now()));
-
-    // print all objects
-    for (var element in objectBoundaries) {
-      debugPrint(element.toJson().toString());
-    }
 
     // update events list
     setState(() {

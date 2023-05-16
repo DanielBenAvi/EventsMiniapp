@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:social_hive_client/model/event.dart';
 
-class EventDetails extends StatelessWidget {
-  const EventDetails({super.key, required this.event});
+class ScreenEventDetails extends StatelessWidget {
+  const ScreenEventDetails({super.key, required this.event});
 
   final EventObject event;
 

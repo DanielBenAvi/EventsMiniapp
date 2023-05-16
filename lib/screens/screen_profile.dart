@@ -4,14 +4,14 @@ import 'package:social_hive_client/model/singleton_user.dart';
 import 'package:social_hive_client/rest_api/object_api.dart';
 import 'package:social_hive_client/widgets/avatar_item.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+class ScreenProfile extends StatefulWidget {
+  const ScreenProfile({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<ScreenProfile> createState() => _ScreenProfileState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ScreenProfileState extends State<ScreenProfile> {
   final SingletonUser singletonUser = SingletonUser.instance;
   late ObjectBoundary objectBoundary;
   String lateName = '';

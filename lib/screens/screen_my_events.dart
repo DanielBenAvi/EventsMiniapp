@@ -4,16 +4,16 @@ import 'package:social_hive_client/model/singleton_user.dart';
 
 import '../model/boundaries/object_boundary.dart';
 import '../rest_api/object_api.dart';
-import 'event_details.dart';
+import 'screen_event_details.dart';
 
-class MyEventsScreen extends StatefulWidget {
-  const MyEventsScreen({Key? key}) : super(key: key);
+class ScreenMyEvents extends StatefulWidget {
+  const ScreenMyEvents({Key? key}) : super(key: key);
 
   @override
-  State<MyEventsScreen> createState() => _MyEventsScreenState();
+  State<ScreenMyEvents> createState() => _ScreenMyEventsState();
 }
 
-class _MyEventsScreenState extends State<MyEventsScreen> {
+class _ScreenMyEventsState extends State<ScreenMyEvents> {
   SingletonUser singletonUser = SingletonUser.instance;
   final List<EventObject> events = <EventObject>[];
 
@@ -50,7 +50,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) =>
-                          EventDetails(event: events[index])));
+                          ScreenEventDetails(event: events[index])));
                 },
               ),
             );

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:social_hive_client/constants/avatars.dart';
 import 'package:social_hive_client/widgets/avatar_item.dart';
 
-class ImagePickerScreen extends StatelessWidget {
-  const ImagePickerScreen({super.key});
+class ScreenImagePicker extends StatelessWidget {
+  const ScreenImagePicker({super.key});
 
   @override
   Widget build(BuildContext context) {
