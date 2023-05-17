@@ -10,7 +10,7 @@ import 'package:social_hive_client/rest_api/base_api.dart';
 class ObjectApi extends BaseApi {
   Future<ObjectBoundary> postObject(ObjectBoundary objectBoundary) async {
     debugPrint('\n -- postObject');
-    // create user
+    ;
     final response = await http.post(
       Uri.parse('http://$host:$portNumber/superapp/objects'),
       headers: <String, String>{
@@ -46,8 +46,10 @@ class ObjectApi extends BaseApi {
 
   Future<List<ObjectBoundary>> getAllObjects() async {
     final client = RetryClient(http.Client());
-    final response =
-        await http.get(Uri.parse('http://$host:$portNumber/superapp/objects'));
+    final response = await http.get(
+      Uri.parse(
+          'http://$host:$portNumber/superapp/objects?userSuperapp=2023b.LiorAriely&userEmail=${SingletonUser.instance.email}'),
+    );
     if (response.statusCode == 200) {
       List<dynamic> objects = jsonDecode(response.body);
       List<ObjectBoundary> objectBoundaries = [];
@@ -56,7 +58,8 @@ class ObjectApi extends BaseApi {
       }
       return objectBoundaries;
     } else {
-      throw Exception('Failed to load objects');
+      throw Exception(
+          'Failed to load objects - status code: ${response.statusCode}');
     }
   }
 }

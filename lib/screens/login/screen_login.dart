@@ -19,7 +19,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text('Events'),
       ),
       body: Container(
         padding: const EdgeInsets.all(20),
@@ -28,7 +28,6 @@ class _ScreenLoginState extends State<ScreenLogin> {
           key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextFormField(
                 controller: _textFieldEmailController,
@@ -69,13 +68,13 @@ class _ScreenLoginState extends State<ScreenLogin> {
     UserBoundary userBoundary =
         await UserApi().fetchUser(_textFieldEmailController.text);
 
-    SingletonUser singletoneUser = SingletonUser.instance;
-    singletoneUser.email = userBoundary.userId.email;
-    singletoneUser.username = userBoundary.username;
-    singletoneUser.avatar = userBoundary.avatar;
-    singletoneUser.role = userBoundary.role;
+    SingletonUser singletonUser = SingletonUser.instance;
+    singletonUser.email = userBoundary.userId.email;
+    singletonUser.username = userBoundary.username;
+    singletonUser.avatar = userBoundary.avatar;
+    singletonUser.role = userBoundary.role;
 
-    debugPrint(singletoneUser.toString());
+    debugPrint(singletonUser.toString());
 
     _screenHome();
   }

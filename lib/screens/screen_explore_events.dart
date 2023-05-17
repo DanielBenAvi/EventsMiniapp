@@ -4,6 +4,7 @@ import 'package:social_hive_client/model/singleton_user.dart';
 
 import '../model/boundaries/object_boundary.dart';
 import '../rest_api/object_api.dart';
+import '../rest_api/user_api.dart';
 import 'screen_event_details.dart';
 
 class ScreenExploreEvents extends StatefulWidget {
@@ -20,6 +21,7 @@ class _ScreenExploreEventsState extends State<ScreenExploreEvents> {
   @override
   void initState() {
     super.initState();
+    UserApi().updateRole('MINIAPP_USER');
     _refreshData();
   }
 

@@ -3,6 +3,7 @@ import 'package:social_hive_client/model/boundaries/object_boundary.dart';
 import 'package:social_hive_client/model/event.dart';
 import 'package:social_hive_client/model/singleton_user.dart';
 import 'package:social_hive_client/rest_api/object_api.dart';
+import 'package:social_hive_client/rest_api/user_api.dart';
 import 'package:social_hive_client/screens/screen_event_details.dart';
 
 // demo list of events
@@ -21,6 +22,7 @@ class _ScreenHomeState extends State<ScreenHome> {
   @override
   void initState() {
     super.initState();
+    UserApi().updateRole('MINIAPP_USER');
     _refreshData();
   }
 
@@ -62,13 +64,9 @@ class _ScreenHomeState extends State<ScreenHome> {
         child: ListView(
           children: <Widget>[
             const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
               child: Text(
                 'Menu',
                 style: TextStyle(
-                  color: Colors.white,
                   fontSize: 24,
                 ),
               ),

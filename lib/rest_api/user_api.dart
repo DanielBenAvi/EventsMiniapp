@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/retry.dart';
+import 'package:social_hive_client/model/singleton_user.dart';
 
 import '../model/boundaries/user_boundary.dart';
 import 'base_api.dart';
@@ -56,5 +58,31 @@ class UserApi extends BaseApi {
     } finally {
       client.close();
     }
+  }
+
+  Future updateRole(String newRole) async {
+    SingletonUser user = SingletonUser.instance;
+
+    UserBoundary updateUserBoundary = UserBoundary(
+      userId: UserId(
+        superapp: '2023b.LiorAriely',
+        email: user.email ?? "",
+      ),
+      role: newRole,
+      username: user.username ?? "",
+      avatar: user.avatar ?? "",
+    );
+
+    final response = http.put(
+      Uri.parse(
+          'http://$host:$portNumber/superapp/users/2023b.LiorAriely/${user.email}'),
+      headers: <String, String>{
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: jsonEncode(updateUserBoundary),
+    );
+
+    debugPrint('updateRole to $newRole');
   }
 }

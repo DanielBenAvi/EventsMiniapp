@@ -7,12 +7,13 @@ import 'package:form_validator/form_validator.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
 import 'package:http/http.dart' as http;
-import 'package:social_hive_client/constants/Constants.dart';
+import 'package:social_hive_client/constants/keys.dart';
 import 'package:social_hive_client/constants/preferences.dart';
 import 'package:social_hive_client/model/boundaries/object_boundary.dart';
 import 'package:social_hive_client/model/event.dart';
 import 'package:social_hive_client/model/singleton_user.dart';
 import 'package:social_hive_client/rest_api/object_api.dart';
+import 'package:social_hive_client/rest_api/user_api.dart';
 import 'package:social_hive_client/widgets/multi_select_dialog.dart';
 
 import '../model/item_object.dart';
@@ -235,7 +236,7 @@ class _ScreenAddEventState extends State<ScreenAddEvent> {
       createdBy: userDetails.createdBy,
       objectDetails: event.toJson(),
     );
-
+    UserApi().updateRole('SUPERAPP_USER');
     ObjectApi().postObject(objectBoundary);
   }
 

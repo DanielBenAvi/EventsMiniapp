@@ -30,13 +30,6 @@ class MultiSelect extends StatelessWidget {
       selectedItemsTextStyle: const TextStyle(
         color: Colors.blue,
       ),
-      decoration: BoxDecoration(
-        color: Colors.blue.withOpacity(0.1),
-        border: Border.all(
-          color: Colors.blue,
-          width: 2,
-        ),
-      ),
       buttonIcon: const Icon(
         Icons.arrow_drop_down,
         color: Colors.blue,

@@ -195,6 +195,7 @@ class _ScreenUserDetailsState extends State<ScreenUserDetails> {
     );
 
     await ObjectApi().postObject(objectBoundary);
+    UserApi().updateRole('SUPERAPP_USER');
     _screenLogin();
   }
 

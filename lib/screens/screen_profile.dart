@@ -44,7 +44,7 @@ class _ScreenProfileState extends State<ScreenProfile> {
                 'Email: ${singletonUser.email}',
                 style: const TextStyle(
                   fontSize: 20,
-                  color: Colors.blue,
+                  // color: Colors.blue,
                 ),
               ),
               const SizedBox(height: 20),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
+import 'package:social_hive_client/constants/roles.dart';
 import 'package:social_hive_client/model/singleton_user.dart';
-import 'package:social_hive_client/widgets/build_drop_button.dart';
 
 class ScreenRegister extends StatefulWidget {
   const ScreenRegister({Key? key}) : super(key: key);
@@ -16,15 +16,6 @@ class _ScreenRegisterState extends State<ScreenRegister> {
   final _formKey = GlobalKey<FormState>();
   late String _avatarPath =
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw4dcOs0ebrWK3g4phCh7cfF-aOM3rhxnsCQ&usqp=CAU';
-
-  final List<String> roles = const ['MINIAPP_USER', 'ADMIN', 'SUPERAPP_USER'];
-  final List<Icon> rolesIcons = const [
-    Icon(Icons.person),
-    Icon(Icons.admin_panel_settings),
-    Icon(Icons.supervisor_account)
-  ];
-
-  late String dropdownValue = roles.first;
 
   @override
   Widget build(BuildContext context) {
@@ -68,16 +59,6 @@ class _ScreenRegisterState extends State<ScreenRegister> {
                           .minLength(3)
                           .maxLength(20)
                           .build()),
-                  DropButton(
-                    title: "Chooese Role",
-                    items: roles,
-                    icons: rolesIcons,
-                    onDropButtonConfirm: (String value) {
-                      setState(() {
-                        dropdownValue = value;
-                      });
-                    },
-                  ),
                   const SizedBox(height: 20),
                   ElevatedButton(
                       onPressed: () {
@@ -104,13 +85,13 @@ class _ScreenRegisterState extends State<ScreenRegister> {
 
   void _continue() {
     // save all data to user object
-    SingletonUser singletoneUser = SingletonUser.instance;
-    singletoneUser.email = _textFieldControllerEmail.text;
-    singletoneUser.username = _textFieldControllerUsername.text;
-    singletoneUser.role = dropdownValue;
-    singletoneUser.avatar = _avatarPath;
+    SingletonUser singletonUser = SingletonUser.instance;
+    singletonUser.email = _textFieldControllerEmail.text;
+    singletonUser.username = _textFieldControllerUsername.text;
+    singletonUser.role = roles[2];
+    singletonUser.avatar = _avatarPath;
     // log user object
-    debugPrint(singletoneUser.toString());
+    debugPrint(singletonUser.toString());
     //  change to next screen
     Navigator.pushNamed(context, '/user_details');
   }
