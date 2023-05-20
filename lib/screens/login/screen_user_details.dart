@@ -154,16 +154,26 @@ class _ScreenUserDetailsState extends State<ScreenUserDetails> {
       role: singletonUser.role as String,
       avatar: singletonUser.avatar as String,
     );
-    await UserApi().postUser(newUserBoundary);
+    UserBoundary userBoundary = await UserApi().postUser(newUserBoundary);
+    if (userBoundary == null) {
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Error: User not created'),
+        ),
+      );
+      return;
+    }
 
     // user details
-    UserDetails userDetails = UserDetails.instance;
-    userDetails.email = singletonUser.email;
-    userDetails.name = _textFieldControllerName.text;
-    userDetails.phoneNumber = _textFieldControllerPhoneNumber.text;
-    userDetails.interests = _getMapFromList(_selectedPreferences);
-    userDetails.gender = dropdownValue.toString();
-    userDetails.genderPreferences = _getMapFromList(_selectedSexPreferences);
+    UserDetails userDetails = UserDetails(
+      email: singletonUser.email?.toString() ?? '',
+      name: _textFieldControllerName.text,
+      phoneNumber: _textFieldControllerPhoneNumber.text,
+      interests: _getSetFromList(_selectedPreferences),
+      gender: dropdownValue.toString(),
+      genderPreferences: _getSetFromList(_selectedSexPreferences),
+    );
 
     debugPrint('userDetails json:${userDetails.toJson()}');
     // Object boundary
@@ -194,8 +204,8 @@ class _ScreenUserDetailsState extends State<ScreenUserDetails> {
       objectDetails: userDetails.toJson(),
     );
 
+    await UserApi().updateRole('SUPERAPP_USER');
     await ObjectApi().postObject(objectBoundary);
-    UserApi().updateRole('SUPERAPP_USER');
     _screenLogin();
   }
 
@@ -204,14 +214,11 @@ class _ScreenUserDetailsState extends State<ScreenUserDetails> {
     Navigator.pushNamed(context, '/login');
   }
 
-  Map<String, dynamic> _getMapFromList(List<ItemObject> list) {
-    Map<String, String> map = {};
-    int i = 0;
+  List<String> _getSetFromList(List<ItemObject> list) {
+    Set<String> preferences = {};
     for (ItemObject item in list) {
-      map[i.toString()] = item.name;
-      i++;
+      preferences.add(item.name);
     }
-    debugPrint('map:$map');
-    return map;
+    return preferences.toList();
   }
 }

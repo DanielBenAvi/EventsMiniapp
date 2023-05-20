@@ -1,20 +1,21 @@
 class UserDetails {
   // constructor
-  String? email;
-  String? name;
-  String? phoneNumber;
-  Map<String, dynamic>? interests;
-  String? gender;
-  Map<String, dynamic>? genderPreferences;
+  String email;
+  String name;
+  String phoneNumber;
+  List<String> interests;
+  String gender;
+  List<String> genderPreferences;
 
-  static UserDetails? _instance;
-
-  UserDetails._internal();
-
-  static UserDetails get instance {
-    _instance ??= UserDetails._internal();
-    return _instance!;
-  }
+  // constructor
+  UserDetails({
+    required this.email,
+    required this.name,
+    required this.phoneNumber,
+    required this.interests,
+    required this.gender,
+    required this.genderPreferences,
+  });
 
   // toString
   @override

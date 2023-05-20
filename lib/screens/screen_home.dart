@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:social_hive_client/model/boundaries/object_boundary.dart';
 import 'package:social_hive_client/model/event.dart';
 import 'package:social_hive_client/model/singleton_user.dart';
-import 'package:social_hive_client/rest_api/object_api.dart';
 import 'package:social_hive_client/rest_api/user_api.dart';
 import 'package:social_hive_client/screens/screen_event_details.dart';
 
@@ -20,9 +18,9 @@ class _ScreenHomeState extends State<ScreenHome> {
   SingletonUser singletonUser = SingletonUser.instance;
 
   @override
-  void initState() {
+  void initState() async {
     super.initState();
-    UserApi().updateRole('MINIAPP_USER');
+    await UserApi().updateRole('MINIAPP_USER');
     _refreshData();
   }
 
@@ -113,28 +111,7 @@ class _ScreenHomeState extends State<ScreenHome> {
   }
 
   Future<void> _refreshData() async {
-    // get list of ObjectBoundary from server
-    List<ObjectBoundary> objectBoundaries = await ObjectApi().getAllObjects();
 
-    if (objectBoundaries.isEmpty) {
-      return;
-    }
-
-    // remove all type != event
-    objectBoundaries.removeWhere((element) => element.type != 'EVENT');
-
-    // remove all events that are not in the future
-    objectBoundaries.removeWhere((element) =>
-        DateTime.parse(element.objectDetails['date']).isBefore(DateTime.now()));
-
-    // update events list
-    setState(() {
-      // convert ObjectBoundary to EventObject
-      events.clear();
-      for (var element in objectBoundaries) {
-        events.add(EventObject.fromJson(element.objectDetails));
-      }
-    });
   }
 
   void _profileScreen(BuildContext context) {

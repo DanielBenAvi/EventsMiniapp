@@ -74,8 +74,6 @@ class _ScreenLoginState extends State<ScreenLogin> {
     singletonUser.avatar = userBoundary.avatar;
     singletonUser.role = userBoundary.role;
 
-    debugPrint(singletonUser.toString());
-
     _screenHome();
   }
 

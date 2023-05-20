@@ -215,10 +215,11 @@ class _ScreenAddEventState extends State<ScreenAddEvent> {
       name: _textFieldControllerName.text,
       contact: _textFieldControllerContact.text,
       description: _textFieldControllerDescription.text,
-      preferences: _getMapFromList(_selectedPreferences),
+      preferences: _getSetFromList(_selectedPreferences),
+      // Set of preferences from list of item object
       location: _locationController.text,
       image: downloadURL ?? 'https://picsum.photos/250?image=9',
-      attendees: {},
+      attendees: [],
       date: dateTime,
     );
 
@@ -236,19 +237,15 @@ class _ScreenAddEventState extends State<ScreenAddEvent> {
       createdBy: userDetails.createdBy,
       objectDetails: event.toJson(),
     );
-    UserApi().updateRole('SUPERAPP_USER');
     ObjectApi().postObject(objectBoundary);
   }
 
-  Map<String, dynamic> _getMapFromList(List<ItemObject> list) {
-    Map<String, String> map = {};
-    int i = 0;
+  List<String> _getSetFromList(List<ItemObject> list) {
+    Set<String> preferences = {};
     for (ItemObject item in list) {
-      map[i.toString()] = item.name;
-      i++;
+      preferences.add(item.name);
     }
-    debugPrint('map:$map');
-    return map;
+    return preferences.toList();
   }
 
   placesAutoCompleteTextField() {

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:social_hive_client/model/event.dart';
 import 'package:social_hive_client/model/singleton_user.dart';
 
-import '../model/boundaries/object_boundary.dart';
-import '../rest_api/object_api.dart';
 import '../rest_api/user_api.dart';
 import 'screen_event_details.dart';
 
@@ -19,9 +17,9 @@ class _ScreenMyEventsState extends State<ScreenMyEvents> {
   final List<EventObject> events = <EventObject>[];
 
   @override
-  void initState() {
+  void initState() async {
     super.initState();
-    UserApi().updateRole('MINIAPP_USER');
+    await UserApi().updateRole('MINIAPP_USER');
     _refreshData();
   }
 
@@ -63,32 +61,6 @@ class _ScreenMyEventsState extends State<ScreenMyEvents> {
   }
 
   Future<void> _refreshData() async {
-    // get list of ObjectBoundary from server
-    List<ObjectBoundary> objectBoundaries = await ObjectApi().getAllObjects();
-
-    // remove all type != event
-    objectBoundaries.removeWhere((element) => element.type != 'EVENT');
-
-    // remove all events that are not in the future
-    objectBoundaries.removeWhere((element) =>
-        DateTime.parse(element.objectDetails['date']).isBefore(DateTime.now()));
-
-    // remove all events that are not mine
-    objectBoundaries.removeWhere(
-        (element) => element.createdBy.userId.email != singletonUser.email);
-
-    // print all objects
-    for (var element in objectBoundaries) {
-      debugPrint(element.toJson().toString());
-    }
-
-    // update events list
-    setState(() {
-      // convert ObjectBoundary to EventObject
-      events.clear();
-      for (var element in objectBoundaries) {
-        events.add(EventObject.fromJson(element.objectDetails));
-      }
-    });
+    // get all events
   }
 }

@@ -42,7 +42,7 @@ class ScreenEventDetails extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            Text('Event Preferences: ${event.preferences.values.toString()}',
+            Text('Event Preferences: ${event.preferences.toString()}',
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -62,7 +62,7 @@ class ScreenEventDetails extends StatelessWidget {
               itemCount: event.attendees.length,
               itemBuilder: (BuildContext context, int index) {
                 return Text(
-                  event.attendees['$index'],
+                  event.attendees.elementAt(index),
                   style: const TextStyle(
                     fontSize: 12,
                   ),

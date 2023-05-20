@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class EventObject {
   String name;
   String description;
@@ -5,8 +7,8 @@ class EventObject {
   String contact;
   DateTime date;
   String image;
-  Map<String, dynamic> attendees;
-  Map<String, dynamic> preferences;
+  List<String> attendees;
+  List<String> preferences;
 
   EventObject(
       {required this.name,
@@ -20,7 +22,7 @@ class EventObject {
 
   @override
   String toString() {
-    return 'Event{name: $name, description: $description, location: $location, date: $date, contact: $contact, image: $image, attendees: $attendees, preferences: $preferences}';
+    return 'Event{name: $name, description: $description, location: $location, date: $date, contact: $contact, image: $image, attendees: $attendees, preferences: $preferences,}';
   }
 
   // toJson
@@ -29,7 +31,7 @@ class EventObject {
         'name': name,
         'description': description,
         'location': location,
-        'date': date.toIso8601String(),
+        'date': jsonEncode(date.toIso8601String()),
         'contact': contact,
         'image': image,
         'attendees': attendees,

@@ -6,11 +6,13 @@ import 'package:http/retry.dart';
 import 'package:social_hive_client/model/boundaries/object_boundary.dart';
 import 'package:social_hive_client/model/singleton_user.dart';
 import 'package:social_hive_client/rest_api/base_api.dart';
+import 'package:social_hive_client/rest_api/user_api.dart';
 
 class ObjectApi extends BaseApi {
   Future<ObjectBoundary> postObject(ObjectBoundary objectBoundary) async {
+    await UserApi().updateRole(
+        'SUPERAPP_USER'); // update role to SUPERAPP_USER only SuperApp_user can create objects
     debugPrint('\n -- postObject');
-    ;
     final response = await http.post(
       Uri.parse('http://$host:$portNumber/superapp/objects'),
       headers: <String, String>{
@@ -41,25 +43,6 @@ class ObjectApi extends BaseApi {
       return ObjectBoundary.fromJson(object);
     } finally {
       client.close();
-    }
-  }
-
-  Future<List<ObjectBoundary>> getAllObjects() async {
-    final client = RetryClient(http.Client());
-    final response = await http.get(
-      Uri.parse(
-          'http://$host:$portNumber/superapp/objects?userSuperapp=2023b.LiorAriely&userEmail=${SingletonUser.instance.email}'),
-    );
-    if (response.statusCode == 200) {
-      List<dynamic> objects = jsonDecode(response.body);
-      List<ObjectBoundary> objectBoundaries = [];
-      for (Map<String, dynamic> object in objects) {
-        objectBoundaries.add(ObjectBoundary.fromJson(object));
-      }
-      return objectBoundaries;
-    } else {
-      throw Exception(
-          'Failed to load objects - status code: ${response.statusCode}');
     }
   }
 }
