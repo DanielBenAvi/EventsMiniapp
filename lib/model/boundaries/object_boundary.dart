@@ -27,7 +27,7 @@ class ObjectBoundary {
         type = json['type'],
         alias = json['alias'],
         active = json['active'],
-          creationTimestamp = DateTime.parse(json['creationTimestamp']),
+        creationTimestamp = DateTime.parse(json['creationTimestamp']),
         location = LocationBoundary.fromJson(json['location']),
         createdBy = CreatedBy.fromJson(json['createdBy']),
         objectDetails = json['objectDetails'];
@@ -49,7 +49,7 @@ class ObjectId {
   String superapp;
   String internalObjectId;
 
-  ObjectId(this.superapp, this.internalObjectId);
+  ObjectId({required this.superapp, required this.internalObjectId});
 
   @override
   String toString() {

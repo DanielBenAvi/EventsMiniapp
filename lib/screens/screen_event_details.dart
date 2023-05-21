@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:social_hive_client/model/event.dart';
+import 'package:social_hive_client/model/boundaries/object_boundary.dart';
 
 class ScreenEventDetails extends StatelessWidget {
-  const ScreenEventDetails({super.key, required this.event});
+  const ScreenEventDetails({super.key, required this.objectBoundary});
 
-  final EventObject event;
+  final ObjectBoundary objectBoundary;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(event.name),
+        title: Text(objectBoundary.objectDetails['name']),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -18,10 +18,10 @@ class ScreenEventDetails extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(event.image),
+            Image.network(objectBoundary.objectDetails['image']),
             const SizedBox(height: 20),
             Text(
-              event.description,
+              objectBoundary.objectDetails['name'],
               style: const TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
@@ -30,19 +30,20 @@ class ScreenEventDetails extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Text(
-              event.location.toString(),
+              objectBoundary.location.toString(),
               style: const TextStyle(fontSize: 20, color: Colors.blue),
             ),
             const SizedBox(height: 20),
             Text(
-              event.date.toString(),
+              objectBoundary.objectDetails['date'].toString(),
               style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 20),
-            Text('Event Preferences: ${event.preferences.toString()}',
+            Text(
+                'Event Preferences: ${objectBoundary.objectDetails['preferences'].toString()}',
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -59,10 +60,10 @@ class ScreenEventDetails extends StatelessWidget {
             ),
             ListView.builder(
               shrinkWrap: true,
-              itemCount: event.attendees.length,
+              itemCount: objectBoundary.objectDetails['attendees'].length,
               itemBuilder: (BuildContext context, int index) {
                 return Text(
-                  event.attendees.elementAt(index),
+                  objectBoundary.objectDetails['attendees'].elementAt(index),
                   style: const TextStyle(
                     fontSize: 12,
                   ),

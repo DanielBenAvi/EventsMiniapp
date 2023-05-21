@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:social_hive_client/model/event.dart';
+import 'package:social_hive_client/model/boundaries/object_boundary.dart';
 import 'package:social_hive_client/model/singleton_user.dart';
 
+import '../rest_api/command_api.dart';
 import '../rest_api/user_api.dart';
 import 'screen_event_details.dart';
 
@@ -14,7 +15,7 @@ class ScreenMyEvents extends StatefulWidget {
 
 class _ScreenMyEventsState extends State<ScreenMyEvents> {
   SingletonUser singletonUser = SingletonUser.instance;
-  final List<EventObject> events = <EventObject>[];
+  final List<ObjectBoundary> events = <ObjectBoundary>[];
 
   @override
   void initState() async {
@@ -45,12 +46,13 @@ class _ScreenMyEventsState extends State<ScreenMyEvents> {
           itemBuilder: (BuildContext context, int index) {
             return Card(
               child: ListTile(
-                title: Text(events[index].name),
-                subtitle: Text(events[index].description),
+                title: Text(events[index].objectDetails['name'] as String),
+                subtitle:
+                    Text(events[index].objectDetails['description'] as String),
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) =>
-                          ScreenEventDetails(event: events[index])));
+                          ScreenEventDetails(objectBoundary: events[index])));
                 },
               ),
             );
@@ -62,5 +64,12 @@ class _ScreenMyEventsState extends State<ScreenMyEvents> {
 
   Future<void> _refreshData() async {
     // get all events
+    events.clear();
+
+    await CommandApi().getMyEvents().then((value) {
+      setState(() {
+        events.addAll(value);
+      });
+    });
   }
 }

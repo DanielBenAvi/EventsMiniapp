@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:social_hive_client/model/event.dart';
 import 'package:social_hive_client/model/singleton_user.dart';
+import 'package:social_hive_client/rest_api/command_api.dart';
 import 'package:social_hive_client/rest_api/user_api.dart';
-import 'package:social_hive_client/screens/screen_event_details.dart';
+import 'package:social_hive_client/widgets/event_card.dart';
+
+import '../model/boundaries/object_boundary.dart';
 
 // demo list of events
-final List<EventObject> events = <EventObject>[];
+final List<ObjectBoundary> events = <ObjectBoundary>[];
 
 class ScreenHome extends StatefulWidget {
   const ScreenHome({Key? key}) : super(key: key);
@@ -18,9 +20,9 @@ class _ScreenHomeState extends State<ScreenHome> {
   SingletonUser singletonUser = SingletonUser.instance;
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
-    await UserApi().updateRole('MINIAPP_USER');
+    UserApi().updateRole('MINIAPP_USER');
     _refreshData();
   }
 
@@ -44,17 +46,7 @@ class _ScreenHomeState extends State<ScreenHome> {
           padding: const EdgeInsets.all(8),
           itemCount: events.length,
           itemBuilder: (BuildContext context, int index) {
-            return Card(
-              child: ListTile(
-                title: Text(events[index].name),
-                subtitle: Text(events[index].description),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) =>
-                          ScreenEventDetails(event: events[index])));
-                },
-              ),
-            );
+            return EventCard(objectBoundary: events[index]);
           },
         ),
       ),
@@ -110,8 +102,15 @@ class _ScreenHomeState extends State<ScreenHome> {
     );
   }
 
-  Future<void> _refreshData() async {
+  Future _refreshData() async {
+    events.clear();
 
+    await CommandApi().getMyEvents().then((value) {
+      setState(() {
+        events.addAll(value);
+        debugPrint('events: $events');
+      });
+    });
   }
 
   void _profileScreen(BuildContext context) {
@@ -119,7 +118,8 @@ class _ScreenHomeState extends State<ScreenHome> {
   }
 
   void _loginScreen(BuildContext context) {
-    Navigator.pop(context);
+    // pop all screens and go to login screen
+    Navigator.popUntil(context, (route) => route.isFirst);
     Navigator.pushNamed(context, '/login');
   }
 }

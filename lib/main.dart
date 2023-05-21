@@ -20,6 +20,7 @@ void main() async {
   );
 
   runApp(
+
     MaterialApp(
       title: 'Social Hive',
       debugShowCheckedModeBanner: false,

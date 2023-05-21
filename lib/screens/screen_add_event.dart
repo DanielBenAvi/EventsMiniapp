@@ -13,7 +13,6 @@ import 'package:social_hive_client/model/boundaries/object_boundary.dart';
 import 'package:social_hive_client/model/event.dart';
 import 'package:social_hive_client/model/singleton_user.dart';
 import 'package:social_hive_client/rest_api/object_api.dart';
-import 'package:social_hive_client/rest_api/user_api.dart';
 import 'package:social_hive_client/widgets/multi_select_dialog.dart';
 
 import '../model/item_object.dart';
@@ -225,7 +224,7 @@ class _ScreenAddEventState extends State<ScreenAddEvent> {
 
     // post event
     ObjectBoundary objectBoundary = ObjectBoundary(
-      objectId: ObjectId('2023b.LiorAriely', ""),
+      objectId: ObjectId(superapp: '2023b.LiorAriely', internalObjectId: '1'),
       type: 'EVENT',
       alias: 'Event',
       active: true,

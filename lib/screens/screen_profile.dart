@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:social_hive_client/model/boundaries/object_boundary.dart';
 import 'package:social_hive_client/model/singleton_user.dart';
-import 'package:social_hive_client/rest_api/object_api.dart';
 import 'package:social_hive_client/widgets/avatar_item.dart';
 
 class ScreenProfile extends StatefulWidget {
@@ -67,13 +66,6 @@ class _ScreenProfileState extends State<ScreenProfile> {
     );
   }
 
-  Future<void> _getUserDetails() async {
-    objectBoundary =
-        await ObjectApi().getObjectBoundary(singletonUser.details.toString());
-    debugPrint('objectBoundary: $objectBoundary');
-    setState(() {
-      lateName = objectBoundary.objectDetails['name'];
-      latePhone = objectBoundary.objectDetails['phoneNumber'];
-    });
-  }
+  /// todo: get user details from database
+  Future<void> _getUserDetails() async {}
 }

@@ -3,37 +3,37 @@ import 'package:social_hive_client/model/boundaries/user_boundary.dart';
 
 class CommandBoundary {
   CommandId commandId;
-  String commnad;
+  String command;
   TargetObject targetObject;
-  DateTime invocationTimestamp;
   InvokedBy invokedBy;
+  DateTime creationTimestamp;
   Map<String, dynamic> commandAttributes;
 
   CommandBoundary({
     required this.commandId,
-    required this.commnad,
+    required this.command,
     required this.targetObject,
-    required this.invocationTimestamp,
     required this.invokedBy,
+    required this.creationTimestamp,
     required this.commandAttributes,
   });
 
   // fromJson
   CommandBoundary.fromJson(Map<String, dynamic> json)
       : commandId = CommandId.fromJson(json['commandId']),
-        commnad = json['commnad'],
+        command = json['command'],
         targetObject = TargetObject.fromJson(json['targetObject']),
-        invocationTimestamp = DateTime.parse(json['invocationTimestamp']),
+        creationTimestamp = DateTime.parse(json['creationTimestamp']),
         invokedBy = InvokedBy.fromJson(json['invokedBy']),
         commandAttributes = json['commandAttributes'];
 
   // toJson
   Map<String, dynamic> toJson() => {
         'commandId': commandId.toJson(),
-        'commnad': commnad,
+        'command': command,
         'targetObject': targetObject.toJson(),
-        'invocationTimestamp': invocationTimestamp.toIso8601String(),
         'invokedBy': invokedBy.toJson(),
+        'creationTimestamp': creationTimestamp.toIso8601String(),
         'commandAttributes': commandAttributes,
       };
 }

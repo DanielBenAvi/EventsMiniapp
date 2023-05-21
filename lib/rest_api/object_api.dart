@@ -26,7 +26,6 @@ class ObjectApi extends BaseApi {
       ObjectBoundary objectBoundary =
           ObjectBoundary.fromJson(jsonDecode(response.body));
       SingletonUser singletonUser = SingletonUser.instance;
-      singletonUser.details = objectBoundary.objectId.internalObjectId;
       debugPrint('objectBoundary: ${objectBoundary.toJson()}');
       return objectBoundary;
     } else {

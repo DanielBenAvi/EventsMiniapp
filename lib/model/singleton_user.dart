@@ -7,7 +7,6 @@ class SingletonUser {
   String? username;
   String? role;
   String? avatar;
-  String? details;
 
   static SingletonUser? _instance;
 
@@ -20,10 +19,8 @@ class SingletonUser {
 
   @override
   String toString() {
-    return 'SingletonUser{email: $email, username: $username, role: $role, avatar: $avatar, details: $details}';
+    return 'SingletonUser{email: $email, username: $username, role: $role, avatar: $avatar}';
   }
-
-  ObjectId get objectId => ObjectId('2023b.LiorAriely', email as String);
 
   CreatedBy get createdBy => CreatedBy(
         userId: UserId(

@@ -194,7 +194,7 @@ class _ScreenUserDetailsState extends State<ScreenUserDetails> {
     );
 
     ObjectBoundary objectBoundary = ObjectBoundary(
-      objectId: ObjectId('2023b.LiorAriely', ""),
+      objectId: ObjectId(superapp: '2023b.LiorAriely', internalObjectId: '1'),
       type: 'USER_DETAILS',
       alias: 'UserDetails',
       active: true,
@@ -210,7 +210,8 @@ class _ScreenUserDetailsState extends State<ScreenUserDetails> {
   }
 
   void _screenLogin() {
-    Navigator.pop(context);
+    // pop all screens
+    Navigator.popUntil(context, (route) => route.isFirst);
     Navigator.pushNamed(context, '/login');
   }
 
