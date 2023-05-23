@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:social_hive_client/model/boundaries/object_boundary.dart';
 
 class ScreenEventDetails extends StatelessWidget {
@@ -8,6 +9,14 @@ class ScreenEventDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DateTime millisecondsSinceEpoch = DateTime.fromMillisecondsSinceEpoch(
+        objectBoundary.objectDetails['date']);
+
+    debugPrint('millisecondsSinceEpoch: ${objectBoundary.objectDetails['date']}');
+
+    String formattedDateTime =
+        DateFormat('dd.MM.yyyy HH:mm').format(millisecondsSinceEpoch);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(objectBoundary.objectDetails['name']),
@@ -35,7 +44,7 @@ class ScreenEventDetails extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Text(
-              objectBoundary.objectDetails['date'].toString(),
+              formattedDateTime,
               style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,

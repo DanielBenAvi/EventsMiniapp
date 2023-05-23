@@ -170,7 +170,7 @@ class _ScreenUserDetailsState extends State<ScreenUserDetails> {
       email: singletonUser.email?.toString() ?? '',
       name: _textFieldControllerName.text,
       phoneNumber: _textFieldControllerPhoneNumber.text,
-      interests: _getSetFromList(_selectedPreferences),
+      preferences: _getSetFromList(_selectedPreferences),
       gender: dropdownValue.toString(),
       genderPreferences: _getSetFromList(_selectedSexPreferences),
     );

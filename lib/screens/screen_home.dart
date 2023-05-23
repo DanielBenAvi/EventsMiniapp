@@ -22,8 +22,13 @@ class _ScreenHomeState extends State<ScreenHome> {
   @override
   void initState() {
     super.initState();
-    UserApi().updateRole('MINIAPP_USER');
+    updateRole();
     _refreshData();
+  }
+
+
+  Future updateRole() async {
+    await UserApi().updateRole('MINIAPP_USER');
   }
 
   @override
@@ -65,7 +70,7 @@ class _ScreenHomeState extends State<ScreenHome> {
               leading: const Icon(Icons.person),
               title: const Text('Profile'),
               onTap: () {
-                _profileScreen(context);
+                Navigator.pushNamed(context, '/profile');
               },
             ),
             ListTile(
@@ -108,13 +113,8 @@ class _ScreenHomeState extends State<ScreenHome> {
     await CommandApi().getMyEvents().then((value) {
       setState(() {
         events.addAll(value);
-        debugPrint('events: $events');
       });
     });
-  }
-
-  void _profileScreen(BuildContext context) {
-    Navigator.pushNamed(context, '/profile');
   }
 
   void _loginScreen(BuildContext context) {

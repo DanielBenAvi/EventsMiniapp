@@ -6,6 +6,8 @@ import '../rest_api/command_api.dart';
 import '../rest_api/user_api.dart';
 import 'screen_event_details.dart';
 
+final List<ObjectBoundary> events = <ObjectBoundary>[];
+
 class ScreenMyEvents extends StatefulWidget {
   const ScreenMyEvents({Key? key}) : super(key: key);
 
@@ -15,13 +17,16 @@ class ScreenMyEvents extends StatefulWidget {
 
 class _ScreenMyEventsState extends State<ScreenMyEvents> {
   SingletonUser singletonUser = SingletonUser.instance;
-  final List<ObjectBoundary> events = <ObjectBoundary>[];
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
-    await UserApi().updateRole('MINIAPP_USER');
+    updateRole();
     _refreshData();
+  }
+
+  Future updateRole() async {
+    await UserApi().updateRole('MINIAPP_USER');
   }
 
   @override
@@ -63,10 +68,9 @@ class _ScreenMyEventsState extends State<ScreenMyEvents> {
   }
 
   Future<void> _refreshData() async {
-    // get all events
     events.clear();
 
-    await CommandApi().getMyEvents().then((value) {
+    await CommandApi().getCreatedByMeEvents().then((value) {
       setState(() {
         events.addAll(value);
       });

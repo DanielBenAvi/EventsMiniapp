@@ -6,16 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
-import 'package:http/http.dart' as http;
 import 'package:social_hive_client/constants/keys.dart';
 import 'package:social_hive_client/constants/preferences.dart';
-import 'package:social_hive_client/model/boundaries/object_boundary.dart';
-import 'package:social_hive_client/model/event.dart';
 import 'package:social_hive_client/model/singleton_user.dart';
 import 'package:social_hive_client/rest_api/object_api.dart';
 import 'package:social_hive_client/widgets/multi_select_dialog.dart';
 
 import '../model/item_object.dart';
+import '../rest_api/user_api.dart';
 
 class ScreenAddEvent extends StatefulWidget {
   const ScreenAddEvent({super.key});
@@ -47,6 +45,17 @@ class _ScreenAddEventState extends State<ScreenAddEvent> {
   PlatformFile? pickedFile;
   UploadTask? uploadTask;
   String? downloadURL;
+
+  @override
+  void initState() {
+    super.initState();
+    updateRole(); // update role to SUPERAPP_USER only SuperApp_user can create objects
+  }
+
+  Future updateRole() async {
+    await UserApi().updateRole(
+        'SUPERAPP_USER'); // update role to SUPERAPP_USER only SuperApp_user can create objects
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -207,36 +216,37 @@ class _ScreenAddEventState extends State<ScreenAddEvent> {
         );
       },
     );
-    // create event
-    debugPrint('\n - Create Event');
-    SingletonUser userDetails = SingletonUser.instance;
-    EventObject event = EventObject(
-      name: _textFieldControllerName.text,
-      contact: _textFieldControllerContact.text,
-      description: _textFieldControllerDescription.text,
-      preferences: _getSetFromList(_selectedPreferences),
-      // Set of preferences from list of item object
-      location: _locationController.text,
-      image: downloadURL ?? 'https://picsum.photos/250?image=9',
-      attendees: [],
-      date: dateTime,
-    );
 
-    // post event
-    ObjectBoundary objectBoundary = ObjectBoundary(
-      objectId: ObjectId(superapp: '2023b.LiorAriely', internalObjectId: '1'),
-      type: 'EVENT',
-      alias: 'Event',
-      active: true,
-      creationTimestamp: DateTime.now(),
-      location: LocationBoundary(
-        lat: 10.2,
-        lng: 10.2,
-      ),
-      createdBy: userDetails.createdBy,
-      objectDetails: event.toJson(),
-    );
-    ObjectApi().postObject(objectBoundary);
+    SingletonUser user = SingletonUser.instance;
+
+    debugPrint('LOG --- Create Event');
+    Map<String, dynamic> objectBoundary = {
+      "objectId": {},
+      "type": "EVENT",
+      "alias": "event",
+      "active": true,
+      "location": {"lat": 10.2, "lng": 10.2},
+      "createdBy": {
+        "userId": {
+          "superapp": "2023b.LiorAriely",
+          "email": user.email,
+        }
+      },
+      "objectDetails": {
+        "name": _textFieldControllerName.text,
+        "contact": _textFieldControllerContact.text,
+        "location": _locationController.text,
+        "image": downloadURL ?? 'https://picsum.photos/250?image=9',
+        "preferences": _getSetFromList(_selectedPreferences),
+        "description": _textFieldControllerDescription.text,
+        "date": dateTime.millisecondsSinceEpoch, // todo: fix date time
+        "attendees": []
+      }
+    };
+
+    ObjectApi().postObjectJson(objectBoundary);
+
+    _screenHome();
   }
 
   List<String> _getSetFromList(List<ItemObject> list) {
@@ -271,18 +281,5 @@ class _ScreenAddEventState extends State<ScreenAddEvent> {
   void _screenHome() {
     Navigator.pop(context);
     Navigator.pushNamed(context, '/home');
-  }
-
-  Future<String> getPointToLngLat(String point) async {
-    final encodedPoint = Uri.encodeQueryComponent(point);
-    final url = Uri.https('maps.googleapis.com', '/maps/api/geocode/json',
-        {'address': encodedPoint, 'key': apiKey});
-
-    final response = await http.get(url);
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      throw Exception('Failed to fetch data');
-    }
   }
 }

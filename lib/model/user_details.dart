@@ -3,7 +3,7 @@ class UserDetails {
   String email;
   String name;
   String phoneNumber;
-  List<String> interests;
+  List<String> preferences;
   String gender;
   List<String> genderPreferences;
 
@@ -12,7 +12,7 @@ class UserDetails {
     required this.email,
     required this.name,
     required this.phoneNumber,
-    required this.interests,
+    required this.preferences,
     required this.gender,
     required this.genderPreferences,
   });
@@ -20,7 +20,7 @@ class UserDetails {
   // toString
   @override
   String toString() {
-    return 'email: $email\nname: $name\nphone: $phoneNumber\n interests: $interests\ngender: $gender\ngenderPreferences: $genderPreferences';
+    return 'email: $email\nname: $name\nphone: $phoneNumber\n interests: $preferences\ngender: $gender\ngenderPreferences: $genderPreferences';
   }
 
   // fromJson
@@ -28,7 +28,7 @@ class UserDetails {
       : email = json['email'],
         name = json['name'],
         phoneNumber = json['phoneNumber'],
-        interests = json['interests'],
+        preferences = json['interests'],
         gender = json['gender'],
         genderPreferences = json['genderPreferences'];
 
@@ -37,7 +37,7 @@ class UserDetails {
         'email': email,
         'name': name,
         'phoneNumber': phoneNumber,
-        'interests': interests,
+        'interests': preferences,
         'gender': gender,
         'genderPreferences': genderPreferences
       };

@@ -44,4 +44,23 @@ class ObjectApi extends BaseApi {
       client.close();
     }
   }
+
+  Future postObjectJson(Map<String, dynamic> objectBoundary) async {
+    debugPrint('LOG --- POST Event');
+    http.Response response = await http.post(
+      Uri.parse('http://$host:$portNumber/superapp/objects'
+          '?userSuperapp=$superApp&userEmail=${SingletonUser.instance.email}'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(objectBoundary),
+    );
+
+    if (response.statusCode != 200) {
+      debugPrint('LOG --- Failed to create event');
+      throw Exception(response.body);
+    } else {
+      debugPrint('LOG --- Success to create event');
+    }
+  }
 }

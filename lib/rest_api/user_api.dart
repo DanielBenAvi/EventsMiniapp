@@ -63,15 +63,9 @@ class UserApi extends BaseApi {
   Future updateRole(String newRole) async {
     SingletonUser user = SingletonUser.instance;
 
-    UserBoundary updateUserBoundary = UserBoundary(
-      userId: UserId(
-        superapp: '2023b.LiorAriely',
-        email: user.email ?? "",
-      ),
-      role: newRole,
-      username: user.username ?? "",
-      avatar: user.avatar ?? "",
-    );
+    Map<String, dynamic> updateUserBoundary = {
+      'role': newRole,
+    };
 
     final response = http.put(
       Uri.parse(
@@ -83,6 +77,6 @@ class UserApi extends BaseApi {
       body: jsonEncode(updateUserBoundary),
     );
 
-    debugPrint('updateRole to $newRole');
+    debugPrint('LOG --- response: ${response.toString()}');
   }
 }

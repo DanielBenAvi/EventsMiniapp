@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_hive_client/model/boundaries/object_boundary.dart';
 import 'package:social_hive_client/rest_api/user_api.dart';
@@ -36,7 +37,9 @@ class CommandApi extends BaseApi {
     );
 
     if (response.statusCode != 200) {
-      throw Exception('Failed to load events');
+      debugPrint('LOG --- Failed to load events');
+      return [];
+      // throw Exception('Failed to load events');
     }
 
     // get first object from response.body
@@ -55,7 +58,49 @@ class CommandApi extends BaseApi {
   /// todo: change base on the preferences
   Future getAllEvent() async {}
 
-  Future getCreatedByMeEvents() async {}
+  Future<List<ObjectBoundary>> getCreatedByMeEvents() async {
+    Map<String, dynamic> command = {
+      "commandId": {},
+      "command": "GET_EVENTS_CREATED_BY_ME",
+      "targetObject": {
+        "objectId": {
+          "superapp": "2023b.LiorAriely",
+          "internalObjectId": "EMPTY_OBJECT_FOR_COMMAND_THAT_NO_TARGET"
+        }
+      },
+      "invokedBy": {
+        "userId": {"superapp": superApp, "email": user.email}
+      },
+      "commandAttributes": {}
+    };
+
+    // Post command
+    http.Response response = await http.post(
+      Uri.parse('http://$host:$portNumber/superapp/miniapp/EVENT'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(command),
+    );
+
+    if (response.statusCode != 200) {
+      debugPrint('LOG --- Failed to load events');
+      return [];
+      // throw Exception('Failed to load events');
+    }
+
+    // get first object from response.body
+    Map<String, dynamic> responseBody = jsonDecode(response.body);
+    List<dynamic> objects = responseBody.values.first;
+
+    // convert to List<ObjectBoundary>
+    List<ObjectBoundary> events = [];
+    for (Map<String, dynamic> object in objects) {
+      events.add(ObjectBoundary.fromJson(object));
+    }
+
+    return events;
+  }
 
   Future joinEvent() async {}
 
