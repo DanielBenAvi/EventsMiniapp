@@ -18,10 +18,14 @@ class _ScreenExploreEventsState extends State<ScreenExploreEvents> {
   final List<ObjectBoundary> events = <ObjectBoundary>[];
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
-    await UserApi().updateRole('MINIAPP_USER');
+    updateRole();
     _refreshData();
+  }
+
+  Future updateRole() async {
+    await UserApi().updateRole('MINIAPP_USER');
   }
 
   @override
@@ -66,7 +70,7 @@ class _ScreenExploreEventsState extends State<ScreenExploreEvents> {
     //todo: remove all events that do not match the user's interests
     events.clear();
 
-    await CommandApi().getMyEvents().then((value) {
+    await CommandApi().getAllEvent().then((value) {
       setState(() {
         events.addAll(value);
       });
