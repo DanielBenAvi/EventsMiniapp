@@ -44,24 +44,27 @@ class _ScreenExploreEventsState extends State<ScreenExploreEvents> {
       ),
       body: RefreshIndicator(
         onRefresh: _refreshData,
-        child: ListView.builder(
-          padding: const EdgeInsets.all(8),
-          itemCount: events.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Card(
-              child: ListTile(
-                title: Text(events[index].objectDetails['name'] as String),
-                subtitle:
-                    Text(events[index].objectDetails['description'] as String),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) =>
-                          ScreenEventDetails(objectBoundary: events[index])));
+        child: events.isNotEmpty
+            ? ListView.builder(
+                padding: const EdgeInsets.all(8),
+                itemCount: events.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Card(
+                    child: ListTile(
+                      title:
+                          Text(events[index].objectDetails['name'] as String),
+                      subtitle: Text(
+                          events[index].objectDetails['description'] as String),
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ScreenEventDetails(
+                                objectBoundary: events[index])));
+                      },
+                    ),
+                  );
                 },
-              ),
-            );
-          },
-        ),
+              )
+            : const Center(child: Text('No new events found')),
       ),
     );
   }

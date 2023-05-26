@@ -26,7 +26,6 @@ class _ScreenHomeState extends State<ScreenHome> {
     _refreshData();
   }
 
-
   Future updateRole() async {
     await UserApi().updateRole('MINIAPP_USER');
   }
@@ -46,15 +45,18 @@ class _ScreenHomeState extends State<ScreenHome> {
         ],
       ),
       body: RefreshIndicator(
-        onRefresh: _refreshData,
-        child: ListView.builder(
-          padding: const EdgeInsets.all(8),
-          itemCount: events.length,
-          itemBuilder: (BuildContext context, int index) {
-            return EventCard(objectBoundary: events[index]);
-          },
-        ),
-      ),
+          onRefresh: _refreshData,
+          child: events.isNotEmpty
+              ? ListView.builder(
+                  padding: const EdgeInsets.all(8),
+                  itemCount: events.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return EventCard(objectBoundary: events[index]);
+                  },
+                )
+              : const Center(
+                  child: Text('No events to attend'),
+                )),
       drawer: Drawer(
         child: ListView(
           children: <Widget>[

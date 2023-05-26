@@ -10,6 +10,18 @@ class ObjectBoundary {
   CreatedBy createdBy;
   Map<String, dynamic> objectDetails;
 
+  // empty constructor
+  ObjectBoundary.empty()
+      : objectId = ObjectId(superapp: '', internalObjectId: ''),
+        type = '',
+        alias = '',
+        active = false,
+        creationTimestamp = DateTime.now(),
+        location = LocationBoundary(lat: 0.0, lng: 0.0),
+        createdBy = CreatedBy(userId: UserId(superapp: '', email: '')),
+        objectDetails = {};
+
+  // constructor
   ObjectBoundary({
     required this.objectId,
     required this.type,

@@ -10,7 +10,6 @@ import 'base_api.dart';
 class CommandApi extends BaseApi {
   Future<List<ObjectBoundary>> getMyEvents() async {
     UserApi().updateRole('MINIAPP_USER');
-
     // Create command
     Map<String, dynamic> command = {
       "commandId": {},
@@ -18,7 +17,7 @@ class CommandApi extends BaseApi {
       "targetObject": {
         "objectId": {
           "superapp": "2023b.LiorAriely",
-          "internalObjectId": "EMPTY_OBJECT_FOR_COMMAND_THAT_NO_TARGET"
+          "internalObjectId": demoObjectInternalObjectId
         }
       },
       "invokedBy": {
@@ -63,7 +62,7 @@ class CommandApi extends BaseApi {
       "targetObject": {
         "objectId": {
           "superapp": "2023b.LiorAriely",
-          "internalObjectId": "EMPTY_OBJECT_FOR_COMMAND_THAT_NO_TARGET"
+          "internalObjectId": demoObjectInternalObjectId
         }
       },
       "invokedBy": {
@@ -106,7 +105,7 @@ class CommandApi extends BaseApi {
       "targetObject": {
         "objectId": {
           "superapp": "2023b.LiorAriely",
-          "internalObjectId": "EMPTY_OBJECT_FOR_COMMAND_THAT_NO_TARGET"
+          "internalObjectId": demoObjectInternalObjectId
         }
       },
       "invokedBy": {
@@ -199,5 +198,45 @@ class CommandApi extends BaseApi {
     if (response.statusCode != 200) {
       debugPrint('LOG --- Failed to leave event');
     }
+  }
+
+  Future<ObjectBoundary?> getUserDetails() async {
+    // todo : update role in screen profile
+
+    String createdBy = "2023b.LiorAriely_${user.email}";
+
+    Map<String, dynamic> command = {
+      "commandId": {},
+      "command": "GET_USER_DETAILS_BY_EMAIL",
+      "targetObject": {
+        "objectId": {
+          "superapp": "2023b.LiorAriely",
+          "internalObjectId": demoObjectInternalObjectId
+        }
+      },
+      "invokedBy": {
+        "userId": {"superapp": "2023b.LiorAriely", "email": "demo@gmail.com"}
+      },
+    };
+
+    // Post command
+    http.Response response = await http.post(
+      Uri.parse('http://$host:$portNumber/superapp/miniapp/EVENT'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(command),
+    );
+
+    if (response.statusCode != 200) {
+      debugPrint('LOG --- Failed to load events');
+      return null;
+    }
+
+    Map<String, dynamic> responseBody = jsonDecode(response.body);
+    debugPrint(
+        '\nLOG --- getUserDetails response: ${responseBody.values.first}\n');
+
+    return ObjectBoundary.fromJson(responseBody.values.first);
   }
 }

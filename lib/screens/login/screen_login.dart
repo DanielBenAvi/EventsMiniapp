@@ -18,17 +18,17 @@ class _ScreenLoginState extends State<ScreenLogin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Events'),
-      ),
       body: Container(
         padding: const EdgeInsets.all(20),
         alignment: Alignment.center,
         child: Form(
           key: _formKey,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              const SizedBox(height: 40),
+              Text("Events", style: Theme.of(context).textTheme.headlineLarge),
+              const SizedBox(height: 40),
               TextFormField(
                 controller: _textFieldEmailController,
                 decoration: const InputDecoration(
@@ -40,14 +40,6 @@ class _ScreenLoginState extends State<ScreenLogin> {
               ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        },
-                      );
                       _login();
                     }
                   },
@@ -66,7 +58,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
 
   Future<void> _login() async {
     UserBoundary userBoundary =
-        await UserApi().fetchUser(_textFieldEmailController.text);
+        await UserApi().getUser(_textFieldEmailController.text);
 
     SingletonUser singletonUser = SingletonUser.instance;
     singletonUser.email = userBoundary.userId.email;

@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:social_hive_client/screens/login/screen_login.dart';
 import 'package:social_hive_client/screens/login/screen_register.dart';
-import 'package:social_hive_client/screens/login/screen_user_details.dart';
 import 'package:social_hive_client/screens/screen_add_event.dart';
 import 'package:social_hive_client/screens/screen_explore_events.dart';
 import 'package:social_hive_client/screens/screen_home.dart';
@@ -13,7 +12,6 @@ import 'package:social_hive_client/widgets/image_picker.dart';
 import 'firebase_options.dart';
 
 void main() async {
-  // initialize the firebase app
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -36,7 +34,6 @@ void main() async {
       routes: {
         '/login': (context) => const ScreenLogin(),
         '/register': (context) => const ScreenRegister(),
-        '/user_details': (context) => const ScreenUserDetails(),
         '/home': (context) => const ScreenHome(),
         '/profile': (context) => const ScreenProfile(),
         '/image_picker': (context) => const ScreenImagePicker(),
