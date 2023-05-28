@@ -4,6 +4,7 @@ import 'package:multi_select_flutter/util/multi_select_item.dart';
 import 'package:multi_select_flutter/util/multi_select_list_type.dart';
 import 'package:social_hive_client/model/item_object.dart';
 
+// ignore: must_be_immutable
 class MultiSelect extends StatelessWidget {
   MultiSelect(this.title, this.buttonText, this.itemsList,
       {super.key, required this.onMultiSelectConfirm}) {

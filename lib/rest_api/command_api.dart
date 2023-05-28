@@ -8,6 +8,7 @@ import 'package:social_hive_client/rest_api/user_api.dart';
 import 'base_api.dart';
 
 class CommandApi extends BaseApi {
+  /// get all events that the user is participating in
   Future<List<ObjectBoundary>> getMyEvents() async {
     UserApi().updateRole('MINIAPP_USER');
     // Create command
@@ -66,7 +67,50 @@ class CommandApi extends BaseApi {
         }
       },
       "invokedBy": {
-        "userId": {"superapp": "2023b.LiorAriely", "email": "demo@gmail.com"}
+        "userId": {"superapp": "2023b.LiorAriely", "email": user.email}
+      },
+      "commandAttributes": {}
+    };
+
+    http.Response response = await http.post(
+      Uri.parse('http://$host:$portNumber/superapp/miniapp/EVENT'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(command),
+    );
+
+    if (response.statusCode != 200) {
+      debugPrint('LOG --- Failed to load events');
+      return [];
+      // throw Exception('Failed to load events');
+    }
+
+    // get first object from response.body
+    Map<String, dynamic> responseBody = jsonDecode(response.body);
+    List<dynamic> objects = responseBody.values.first;
+
+    // convert to List<ObjectBoundary>
+    List<ObjectBoundary> events = [];
+    for (Map<String, dynamic> object in objects) {
+      events.add(ObjectBoundary.fromJson(object));
+    }
+
+    return events;
+  }
+
+  Future<List<ObjectBoundary>> getAllEventBasedOnPeferences() async {
+    Map<String, dynamic> command = {
+      "commandId": {},
+      "command": "GET_EVENTS_BASED_ON_PREFERENCES",
+      "targetObject": {
+        "objectId": {
+          "superapp": "2023b.LiorAriely",
+          "internalObjectId": demoObjectInternalObjectId
+        }
+      },
+      "invokedBy": {
+        "userId": {"superapp": "2023b.LiorAriely", "email": user.email}
       },
       "commandAttributes": {}
     };
@@ -201,10 +245,6 @@ class CommandApi extends BaseApi {
   }
 
   Future<ObjectBoundary?> getUserDetails() async {
-    // todo : update role in screen profile
-
-    String createdBy = "2023b.LiorAriely_${user.email}";
-
     Map<String, dynamic> command = {
       "commandId": {},
       "command": "GET_USER_DETAILS_BY_EMAIL",
@@ -215,7 +255,7 @@ class CommandApi extends BaseApi {
         }
       },
       "invokedBy": {
-        "userId": {"superapp": "2023b.LiorAriely", "email": "demo@gmail.com"}
+        "userId": {"superapp": "2023b.LiorAriely", "email": user.email}
       },
     };
 

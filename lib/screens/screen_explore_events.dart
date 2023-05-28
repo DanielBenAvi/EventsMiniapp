@@ -73,7 +73,7 @@ class _ScreenExploreEventsState extends State<ScreenExploreEvents> {
     //todo: remove all events that do not match the user's interests
     events.clear();
 
-    await CommandApi().getAllEvent().then((value) {
+    await CommandApi().getAllEventBasedOnPeferences().then((value) {
       setState(() {
         events.addAll(value);
       });

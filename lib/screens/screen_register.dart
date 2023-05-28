@@ -3,10 +3,7 @@ import 'package:form_validator/form_validator.dart';
 import 'package:social_hive_client/constants/roles.dart';
 import 'package:social_hive_client/model/singleton_user.dart';
 import 'package:social_hive_client/rest_api/user_api.dart';
-
-import '../../constants/preferences.dart';
-import '../../model/item_object.dart';
-import '../../widgets/multi_select_dialog.dart';
+import '../model/item_object.dart';
 
 class ScreenRegister extends StatefulWidget {
   const ScreenRegister({Key? key}) : super(key: key);
@@ -18,8 +15,6 @@ class ScreenRegister extends StatefulWidget {
 class _ScreenRegisterState extends State<ScreenRegister> {
   final _textFieldControllerEmail = TextEditingController();
   final _textFieldControllerUsername = TextEditingController();
-  final _textFieldControllerName = TextEditingController();
-  final _textFieldControllerPhoneNumber = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   late String _avatarPath =
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw4dcOs0ebrWK3g4phCh7cfF-aOM3rhxnsCQ&usqp=CAU';
@@ -76,29 +71,6 @@ class _ScreenRegisterState extends State<ScreenRegister> {
                       },
                       child: const Text('Choose Avatar')),
                   const SizedBox(height: 20),
-                  TextFormField(
-                    controller: _textFieldControllerName,
-                    decoration: const InputDecoration(hintText: 'Name'),
-                    validator:
-                        ValidationBuilder().minLength(3).maxLength(20).build(),
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    controller: _textFieldControllerPhoneNumber,
-                    decoration: const InputDecoration(hintText: 'Phone Number'),
-                    validator:
-                        ValidationBuilder().phone().maxLength(50).build(),
-                  ),
-                  const SizedBox(height: 20),
-                  MultiSelect(
-                    "Preferences",
-                    "Preferences",
-                    Preferences().getPreferences(),
-                    onMultiSelectConfirm: (List<ItemObject> results) {
-                      _selectedPreferences = results;
-                    },
-                  ),
-                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
@@ -120,13 +92,11 @@ class _ScreenRegisterState extends State<ScreenRegister> {
     SingletonUser singletonUser = _setSingletonUser();
     _createUser(singletonUser);
     _createUserDetails();
-    _screenLogin();
   }
 
-  void _screenLogin() {
-    // pop all screens
+  void _createUserDetails() {
     Navigator.popUntil(context, (route) => route.isFirst);
-    Navigator.pushNamed(context, '/login');
+    Navigator.pushNamed(context, '/register_user_details');
   }
 
   Future<void> _imagePicker(BuildContext context) async {
@@ -156,14 +126,5 @@ class _ScreenRegisterState extends State<ScreenRegister> {
     };
 
     await UserApi().postUser(user);
-  }
-
-  Future _createUserDetails() async {
-    List<String> preferences = [];
-    for (var element in _selectedPreferences) {
-      preferences.add(element.name);
-    }
-    await UserApi().postUserDetails(_textFieldControllerName.text,
-        _textFieldControllerPhoneNumber.text, preferences);
   }
 }

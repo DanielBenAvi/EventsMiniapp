@@ -25,7 +25,6 @@ class ObjectApi extends BaseApi {
     if (response.statusCode == 200) {
       ObjectBoundary objectBoundary =
           ObjectBoundary.fromJson(jsonDecode(response.body));
-      SingletonUser singletonUser = SingletonUser.instance;
       debugPrint('objectBoundary: ${objectBoundary.toJson()}');
       return objectBoundary;
     } else {

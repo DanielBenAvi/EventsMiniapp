@@ -35,7 +35,7 @@ class UserApi extends BaseApi {
     Map<String, dynamic> userDetails = {
       "objectId": {},
       "type": "USER_DETAILS",
-      "alias": "userDetails",
+      "alias": "USER_DETAILS",
       "active": true,
       "location": {"lat": 10.200, "lng": 10.200},
       "createdBy": {
@@ -44,7 +44,7 @@ class UserApi extends BaseApi {
       "objectDetails": {
         "name": name,
         "phoneNum": phoneNum,
-        "preferences": preferences
+        "preferences": preferences.toList()
       }
     };
 
@@ -53,13 +53,15 @@ class UserApi extends BaseApi {
           '?userSuperapp=$superApp&userEmail=${user.email}'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
       },
       body: jsonEncode(userDetails),
     );
 
     if (response.statusCode != 200) {
       debugPrint('LOG --- Failed to create user details');
-      return null;
+      throw Exception('Failed to create user details');
+      // todo: delete user
     }
 
     Map<String, dynamic> responseBody = jsonDecode(response.body);
