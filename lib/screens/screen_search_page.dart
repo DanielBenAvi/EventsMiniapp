@@ -163,8 +163,15 @@ class _ScreenSearchPageState extends State<ScreenSearchPage> {
   }
 
   Future<void> _searchByPreference(String value) async {
-    // TODO: implement _searchByPreference
-    // TODO: change the search by preference to get list of preferences
+    if (_selectedPreferences.isNotEmpty) {
+      await CommandApi()
+          .searchByPrefrences(_selectedPreferences.map((e) => e.name).toList())
+          .then((value) {
+        setState(() {
+          events.addAll(value);
+        });
+      });
+    }
   }
 
   Future<void> _searchByDate(String value) async {
