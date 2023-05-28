@@ -34,13 +34,12 @@ class _ScreenExploreEventsState extends State<ScreenExploreEvents> {
       appBar: AppBar(
         title: const Text('Explore Events'),
         actions: [
-          IconButton(
-            onPressed: () {
-              _refreshData();
-            },
-            icon: const Icon(Icons.refresh),
-          ),
+          IconButton(onPressed: _refreshData, icon: const Icon(Icons.refresh)),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _search,
+        child: const Icon(Icons.search),
       ),
       body: RefreshIndicator(
         onRefresh: _refreshData,
@@ -78,5 +77,9 @@ class _ScreenExploreEventsState extends State<ScreenExploreEvents> {
         events.addAll(value);
       });
     });
+  }
+
+  Future<void> _search() async {
+    Navigator.pushNamed(context, '/search');
   }
 }

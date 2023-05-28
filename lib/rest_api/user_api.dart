@@ -86,16 +86,20 @@ class UserApi extends BaseApi {
       'role': newRole,
     };
 
-    final response = http.put(
-      Uri.parse(
-          'http://$host:$portNumber/superapp/users/2023b.LiorAriely/${user.email}'),
-      headers: <String, String>{
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: jsonEncode(updateUserBoundary),
-    );
-
-    debugPrint('LOG --- response: ${response.toString()}');
+    try {
+      http.put(
+        Uri.parse(
+            'http://$host:$portNumber/superapp/users/2023b.LiorAriely/${user.email}'),
+        headers: <String, String>{
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: jsonEncode(updateUserBoundary),
+      );
+      debugPrint('LOG --- user role updated to $newRole');
+    } catch (e) {
+      debugPrint('LOG --- Failed to update user role');
+      throw Exception('Failed to update user role');
+    }
   }
 }

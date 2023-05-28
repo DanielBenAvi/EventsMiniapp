@@ -279,4 +279,95 @@ class CommandApi extends BaseApi {
 
     return ObjectBoundary.fromJson(responseBody.values.first);
   }
+
+  Future<List<ObjectBoundary>> searchByName(String name) async {
+    Map<String, dynamic> command = {
+      "commandId": {},
+      "command": "SEARCH_EVENTS_BY_NAME",
+      "targetObject": {
+        "objectId": {
+          "superapp": "2023b.LiorAriely",
+          "internalObjectId": demoObjectInternalObjectId
+        }
+      },
+      "invokedBy": {
+        "userId": {"superapp": "2023b.LiorAriely", "email": user.email}
+      },
+      "commandAttributes": {
+        "name": name,
+      }
+    };
+
+    http.Response response = await http.post(
+      Uri.parse('http://$host:$portNumber/superapp/miniapp/EVENT'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(command),
+    );
+
+    if (response.statusCode != 200) {
+      debugPrint('LOG --- Failed to load events');
+      return [];
+      // throw Exception('Failed to load events');
+    }
+
+    // get first object from response.body
+    Map<String, dynamic> responseBody = jsonDecode(response.body);
+    List<dynamic> objects = responseBody.values.first;
+
+    // convert to List<ObjectBoundary>
+    List<ObjectBoundary> events = [];
+    for (Map<String, dynamic> object in objects) {
+      events.add(ObjectBoundary.fromJson(object));
+    }
+
+    return events;
+  }
+
+  Future<List<ObjectBoundary>> searchByDates(int startDate, int endDate) async {
+    Map<String, dynamic> command = {
+      "commandId": {},
+      "command": "SEARCH_EVENTS_BY_DATE",
+      "targetObject": {
+        "objectId": {
+          "superapp": "2023b.LiorAriely",
+          "internalObjectId": demoObjectInternalObjectId
+        }
+      },
+      "invokedBy": {
+        "userId": {"superapp": "2023b.LiorAriely", "email": user.email}
+      },
+      "commandAttributes": {
+        "startDate": startDate,
+        "endDate": endDate,
+      }
+    };
+
+    http.Response response = await http.post(
+      Uri.parse('http://$host:$portNumber/superapp/miniapp/EVENT'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(command),
+    );
+
+    if (response.statusCode != 200) {
+      debugPrint('LOG --- Failed to load events');
+      return [];
+      // throw Exception('Failed to load events');
+    }
+
+    // get first object from response.body
+    Map<String, dynamic> responseBody = jsonDecode(response.body);
+    List<dynamic> objects = responseBody.values.first;
+
+    // convert to List<ObjectBoundary>
+    List<ObjectBoundary> events = [];
+    for (Map<String, dynamic> object in objects) {
+      events.add(ObjectBoundary.fromJson(object));
+    }
+
+    return events;
+  }
 }

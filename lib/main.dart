@@ -9,6 +9,7 @@ import 'package:social_hive_client/screens/screen_my_events.dart';
 import 'package:social_hive_client/screens/screen_profile.dart';
 import 'package:social_hive_client/widgets/image_picker.dart';
 import 'package:social_hive_client/screens/screen_register_user_details.dart';
+import 'package:social_hive_client/screens/screen_search_page.dart';
 
 import 'firebase_options.dart';
 
@@ -42,6 +43,7 @@ void main() async {
         '/add_event': (context) => const ScreenAddEvent(),
         '/my_events': (context) => const ScreenMyEvents(),
         '/explore_events': (context) => const ScreenExploreEvents(),
+        '/search': (context) => const ScreenSearchPage(),
       },
     ),
   );

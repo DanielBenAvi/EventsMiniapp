@@ -6,5 +6,5 @@ class BaseApi {
   SingletonUser user = SingletonUser.instance;
   final String superApp = "2023b.LiorAriely";
   final String demoObjectInternalObjectId =
-      "3c14475a-f8be-44e6-8709-5af884c8106f"; // todo: change to your object id when start the app
+      "b56c29d1-f7b9-4cb9-8855-ed71d84585d2"; // todo: change to your object id when start the app
 }
