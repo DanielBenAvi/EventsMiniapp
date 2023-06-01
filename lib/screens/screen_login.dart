@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:social_hive_client/model/boundaries/user_boundary.dart';
 import 'package:social_hive_client/model/singleton_user.dart';
+import 'package:social_hive_client/rest_api/object_api.dart';
 import 'package:social_hive_client/rest_api/user_api.dart';
 
 class ScreenLogin extends StatefulWidget {
@@ -65,6 +66,8 @@ class _ScreenLoginState extends State<ScreenLogin> {
     singletonUser.username = userBoundary.username;
     singletonUser.avatar = userBoundary.avatar;
     singletonUser.role = userBoundary.role;
+
+    await ObjectApi().getDemoObject();
 
     _screenHome();
   }

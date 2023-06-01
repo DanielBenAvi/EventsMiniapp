@@ -3,11 +3,14 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_hive_client/model/boundaries/object_boundary.dart';
+import 'package:social_hive_client/model/singleton_demo_object.dart';
 import 'package:social_hive_client/rest_api/user_api.dart';
 
 import 'base_api.dart';
 
 class CommandApi extends BaseApi {
+  SingletonDemoObject demoObject = SingletonDemoObject.instance;
+
   /// get all events that the user is participating in
   Future<List<ObjectBoundary>> getMyEvents() async {
     UserApi().updateRole('MINIAPP_USER');
@@ -18,7 +21,7 @@ class CommandApi extends BaseApi {
       "targetObject": {
         "objectId": {
           "superapp": "2023b.LiorAriely",
-          "internalObjectId": demoObjectInternalObjectId
+          "internalObjectId": demoObject.uuid
         }
       },
       "invokedBy": {
@@ -63,7 +66,7 @@ class CommandApi extends BaseApi {
       "targetObject": {
         "objectId": {
           "superapp": "2023b.LiorAriely",
-          "internalObjectId": demoObjectInternalObjectId
+          "internalObjectId": demoObject.uuid
         }
       },
       "invokedBy": {
@@ -106,7 +109,7 @@ class CommandApi extends BaseApi {
       "targetObject": {
         "objectId": {
           "superapp": "2023b.LiorAriely",
-          "internalObjectId": demoObjectInternalObjectId
+          "internalObjectId": demoObject.uuid
         }
       },
       "invokedBy": {
@@ -149,7 +152,7 @@ class CommandApi extends BaseApi {
       "targetObject": {
         "objectId": {
           "superapp": "2023b.LiorAriely",
-          "internalObjectId": demoObjectInternalObjectId
+          "internalObjectId": demoObject.uuid
         }
       },
       "invokedBy": {
@@ -251,7 +254,7 @@ class CommandApi extends BaseApi {
       "targetObject": {
         "objectId": {
           "superapp": "2023b.LiorAriely",
-          "internalObjectId": demoObjectInternalObjectId
+          "internalObjectId": demoObject.uuid
         }
       },
       "invokedBy": {
@@ -287,7 +290,7 @@ class CommandApi extends BaseApi {
       "targetObject": {
         "objectId": {
           "superapp": "2023b.LiorAriely",
-          "internalObjectId": demoObjectInternalObjectId
+          "internalObjectId": demoObject.uuid
         }
       },
       "invokedBy": {
@@ -332,7 +335,7 @@ class CommandApi extends BaseApi {
       "targetObject": {
         "objectId": {
           "superapp": "2023b.LiorAriely",
-          "internalObjectId": demoObjectInternalObjectId
+          "internalObjectId": demoObject.uuid
         }
       },
       "invokedBy": {
@@ -379,7 +382,7 @@ class CommandApi extends BaseApi {
       "targetObject": {
         "objectId": {
           "superapp": "2023b.LiorAriely",
-          "internalObjectId": demoObjectInternalObjectId
+          "internalObjectId": demoObject.uuid
         }
       },
       "invokedBy": {

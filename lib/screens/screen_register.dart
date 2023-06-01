@@ -3,7 +3,6 @@ import 'package:form_validator/form_validator.dart';
 import 'package:social_hive_client/constants/roles.dart';
 import 'package:social_hive_client/model/singleton_user.dart';
 import 'package:social_hive_client/rest_api/user_api.dart';
-import '../model/item_object.dart';
 
 class ScreenRegister extends StatefulWidget {
   const ScreenRegister({Key? key}) : super(key: key);
@@ -18,8 +17,6 @@ class _ScreenRegisterState extends State<ScreenRegister> {
   final _formKey = GlobalKey<FormState>();
   late String _avatarPath =
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw4dcOs0ebrWK3g4phCh7cfF-aOM3rhxnsCQ&usqp=CAU';
-
-  List<ItemObject> _selectedPreferences = [];
 
   @override
   Widget build(BuildContext context) {
