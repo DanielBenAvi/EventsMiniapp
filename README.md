@@ -1,4 +1,4 @@
-# Marketplace
+# Events
 
 ## About
 A Miniapp in A collection in Superapp.
