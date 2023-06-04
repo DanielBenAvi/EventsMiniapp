@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:form_validator/form_validator.dart';
-import 'package:social_hive_client/constants/roles.dart';
+import 'dart:typed_data';
+
+// ignore: depend_on_referenced_packages
+import 'package:file_picker/file_picker.dart';
+// ignore: depend_on_referenced_packages
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:social_hive_client/model/boundaries/user_boundary.dart';
 import 'package:social_hive_client/model/singleton_user.dart';
 import 'package:social_hive_client/rest_api/user_api.dart';
+import 'package:social_hive_client/validator.dart';
 
 class ScreenRegister extends StatefulWidget {
   const ScreenRegister({Key? key}) : super(key: key);
@@ -12,68 +18,60 @@ class ScreenRegister extends StatefulWidget {
 }
 
 class _ScreenRegisterState extends State<ScreenRegister> {
-  final _textFieldControllerEmail = TextEditingController();
-  final _textFieldControllerUsername = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  late String _avatarPath =
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw4dcOs0ebrWK3g4phCh7cfF-aOM3rhxnsCQ&usqp=CAU';
+  final _emailController = TextEditingController();
+  final _usernameController = TextEditingController();
+
+  PlatformFile? pickedFile;
+  UploadTask? uploadTask;
+  String? downloadURL;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Register'),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
       ),
-      body: SingleChildScrollView(
+      body: Padding(
+        padding: const EdgeInsets.all(16),
         child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
+          child: SizedBox(
+            width: 300,
             child: Form(
               key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Container(
-                    width: 200,
-                    height: 200,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.blue, width: 2),
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: NetworkImage(
-                            _avatarPath,
-                          ),
-                          fit: BoxFit.contain),
+                  TextFormField(
+                      controller: _emailController,
+                      decoration: const InputDecoration(
+                        labelText: 'Email',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) => Validator().isValidEmail(value!)
+                          ? null
+                          : 'Please enter a valid email'),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: _usernameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Username',
+                      border: OutlineInputBorder(),
                     ),
-                  ),
-                  TextFormField(
-                    controller: _textFieldControllerEmail,
-                    decoration: const InputDecoration(hintText: 'Email'),
-                    validator:
-                        ValidationBuilder().email().maxLength(50).build(),
+                    validator: (value) =>
+                        Validator().isNotEmpty(value!) ? null : 'Required',
                   ),
                   const SizedBox(height: 20),
-                  TextFormField(
-                      controller: _textFieldControllerUsername,
-                      decoration: const InputDecoration(hintText: 'Username'),
-                      validator: ValidationBuilder()
-                          .minLength(3)
-                          .maxLength(20)
-                          .build()),
+                  OutlinedButton(
+                      onPressed: _filePiker, child: const Text('Add Image')),
                   const SizedBox(height: 20),
-                  ElevatedButton(
-                      onPressed: () {
-                        _imagePicker(context);
-                      },
-                      child: const Text('Choose Avatar')),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        _continue();
-                      }
-                    },
+                  OutlinedButton(
+                    onPressed: _continue,
                     child: const Text('Continue'),
                   ),
                 ],
@@ -85,43 +83,57 @@ class _ScreenRegisterState extends State<ScreenRegister> {
     );
   }
 
-  void _continue() {
-    SingletonUser singletonUser = _setSingletonUser();
-    _createUser(singletonUser);
-    _createUserDetails();
+  Future _continue() async {
+    // create new userBoundary
+    NewUserBoundary newUserBoundary = NewUserBoundary(
+        email: _emailController.text,
+        role: 'SUPERAPP_USER',
+        username: _usernameController.text,
+        avatar: downloadURL!);
+    // call api to register user
+    try {
+      await UserApi().postUser(newUserBoundary.toJson());
+    } catch (e) {
+      debugPrint('Error: $e');
+    }
+    
+    // if successful, update singleton user
+    SingletonUser user = SingletonUser.instance;
+    user.email = _emailController.text;
+    user.username = _usernameController.text;
+    user.role = 'SUPERAPP_USER';
+    user.avatar = downloadURL;
+    // - update singleton user
+
+    if (_formKey.currentState!.validate()) {
+      _moveToNextScreen();
+    }
   }
 
-  void _createUserDetails() {
-    Navigator.popUntil(context, (route) => route.isFirst);
+  void _moveToNextScreen() {
     Navigator.pushNamed(context, '/register_user_details');
   }
 
-  Future<void> _imagePicker(BuildContext context) async {
-    final result = await Navigator.pushNamed(context, '/image_picker');
+  Future _filePiker() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['png', 'jpeg'],
+    );
+    if (result == null) return;
+
     setState(() {
-      _avatarPath = (result as String?)!;
+      pickedFile = result.files.first;
     });
-    if (!mounted) return;
-  }
+    Uint8List? uploadFile = result.files.single.bytes;
+    final path = 'files/events/${pickedFile!.name}';
 
-  SingletonUser _setSingletonUser() {
-    SingletonUser singletonUser = SingletonUser.instance;
-    singletonUser.email = _textFieldControllerEmail.text;
-    singletonUser.username = _textFieldControllerUsername.text;
-    singletonUser.role = roles[2];
-    singletonUser.avatar = _avatarPath;
-
-    return singletonUser;
-  }
-
-  Future _createUser(SingletonUser singletonUser) async {
-    Map<String, dynamic> user = {
-      'email': singletonUser.email,
-      'username': singletonUser.username,
-      'role': singletonUser.role,
-      'avatar': singletonUser.avatar,
-    };
-
-    await UserApi().postUser(user);
+    final ref = FirebaseStorage.instance.ref().child(path);
+    uploadTask = ref.putData(uploadFile!);
+    final snapshot = await uploadTask!.whenComplete(() {});
+    final urlDownload = await snapshot.ref.getDownloadURL();
+    setState(() {
+      downloadURL = urlDownload;
+    });
+    debugPrint('Download-Link: $urlDownload');
   }
 }

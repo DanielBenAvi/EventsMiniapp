@@ -312,7 +312,6 @@ class CommandApi extends BaseApi {
     if (response.statusCode != 200) {
       debugPrint('LOG --- Failed to load events');
       return [];
-      // throw Exception('Failed to load events');
     }
 
     // get first object from response.body

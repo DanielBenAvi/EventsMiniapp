@@ -129,7 +129,7 @@ class _ScreenAddEventState extends State<ScreenAddEvent> {
                     OutlinedButton(
                         onPressed: _filePiker, child: const Text('Add Image')),
                     Image.network(
-                      downloadURL ?? 'https://picsum.photos/250?image=9',
+                      downloadURL ?? 'https://fire-center.co.il/wp-content/uploads/2021/02/placeholder.png',
                       width: 100,
                       height: 100,
                     ),
@@ -236,10 +236,10 @@ class _ScreenAddEventState extends State<ScreenAddEvent> {
         "name": _textFieldControllerName.text,
         "contact": _textFieldControllerContact.text,
         "location": _locationController.text,
-        "image": downloadURL ?? 'https://picsum.photos/250?image=9',
+        "image": downloadURL,
         "preferences": _getSetFromList(_selectedPreferences),
         "description": _textFieldControllerDescription.text,
-        "date": dateTime.millisecondsSinceEpoch, // todo: fix date time
+        "date": dateTime.millisecondsSinceEpoch, 
         "attendees": []
       }
     };

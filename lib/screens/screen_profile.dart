@@ -41,8 +41,7 @@ class _ScreenProfileState extends State<ScreenProfile> {
             child: Column(
               children: [
                 AvatarItem(
-                  photoUrl: singletonUser.avatar?.toString() ??
-                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw4dcOs0ebrWK3g4phCh7cfF-aOM3rhxnsCQ&usqp=CAU',
+                  photoUrl: singletonUser.avatar!,
                 ),
                 const SizedBox(height: 20),
                 Text('Email: ${singletonUser.email}',

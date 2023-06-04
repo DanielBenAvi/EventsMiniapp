@@ -100,6 +100,6 @@ class _ScreenRegisterUserDetailsState extends State<ScreenRegisterUserDetails> {
 
   void _screenHome() {
     Navigator.pop(context);
-    Navigator.pushNamed(context, '/home');
+    Navigator.pushNamed(context, '/login');
   }
 }
