@@ -378,7 +378,7 @@ class CommandApi extends BaseApi {
       List<String> preferences) async {
     Map<String, dynamic> command = {
       "commandId": {},
-      "command": "SEARCH_EVENTS_BY_DATE",
+      "command": "SEARCH_EVENTS_BY_PREFERENCES",
       "targetObject": {
         "objectId": {
           "superapp": "2023b.LiorAriely",

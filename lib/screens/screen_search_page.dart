@@ -73,7 +73,7 @@ class _ScreenSearchPageState extends State<ScreenSearchPage> {
         : searchView == Sreach.dates
             ? OutlinedButton(
                 onPressed: () {
-                  _search(_textFieldControllerSearch.text);
+                  _search('');
                 },
                 child: const Text('Choose dates'),
               )
@@ -83,6 +83,7 @@ class _ScreenSearchPageState extends State<ScreenSearchPage> {
                 Preferences().getPreferences(),
                 onMultiSelectConfirm: (List<ItemObject> results) {
                   _selectedPreferences = results;
+                  _search('');
                 },
               );
   }
@@ -144,7 +145,6 @@ class _ScreenSearchPageState extends State<ScreenSearchPage> {
       case Sreach.name:
         await _searchByName(value);
         break;
-
       case Sreach.dates:
         await _searchByDate(value);
         break;
@@ -157,6 +157,7 @@ class _ScreenSearchPageState extends State<ScreenSearchPage> {
   Future<void> _searchByName(String value) async {
     await CommandApi().searchByName(value).then((value) {
       setState(() {
+          events.clear();
         events.addAll(value);
       });
     });
@@ -168,6 +169,7 @@ class _ScreenSearchPageState extends State<ScreenSearchPage> {
           .searchByPrefrences(_selectedPreferences.map((e) => e.name).toList())
           .then((value) {
         setState(() {
+          events.clear();
           events.addAll(value);
         });
       });
@@ -186,6 +188,7 @@ class _ScreenSearchPageState extends State<ScreenSearchPage> {
     int end = result?.end.millisecondsSinceEpoch as int;
     await CommandApi().searchByDates(start, end).then((value) {
       setState(() {
+          events.clear();
         events.addAll(value);
       });
     });
