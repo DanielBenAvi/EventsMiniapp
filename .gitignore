@@ -95,4 +95,4 @@ app.*.map.json
 
 
 # gitignore file for Flutter
-/lib/firebase_options.dart
+lib/firebase_options.dart
